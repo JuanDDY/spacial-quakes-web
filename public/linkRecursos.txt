@@ -1,0 +1,9 @@
+Github documentacion globe.gl
+https://github.com/vasturiano/globe.gl/blob/master/example/moon-landing-sites
+
+Imagenes de planeta tierra y luna
+https://github.com/mrdoob/three.js/tree/master/examples/textures/planets
+
+
+: Textura planetas
+https://www.solarsystemscope.com/textures/
