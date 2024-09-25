@@ -1,0 +1,144 @@
+:root {
+  /* Variables de posición y tamaño para las imágenes */
+  --marte-left: 10%; /* Posición horizontal de Marte */
+  --marte-bottom: -20%; /* Posición vertical de Marte */
+  --marte-size: 550px; /* Tamaño de Marte */
+
+  --luna-left: 28%; /* Posición horizontal de la Luna */
+  --luna-bottom: -34%; /* Posición vertical de la Luna */
+  --luna-size: 650px; /* Tamaño de la Luna */
+
+  --astronauta-right: 5%; /* Posición horizontal del Astronauta */
+  --astronauta-top: -70%; /* Posición vertical del Astronauta */
+  --astronauta-size: 700px; /* Tamaño del Astronauta */
+
+  /* Variables para la posición y tamaño del botón */
+  --boton-bottom: 7%; /* Posición vertical del botón */
+  --boton-width: 1000px; /* Ancho del botón */
+  --boton-padding: 20px 60px; /* Padding del botón */
+  --boton-font-size: 70px; /* Tamaño de fuente del botón */
+
+  /* Variables para la posición y tamaño del texto SEISMinds */
+  --seisminds-right: 20px; /* Posición horizontal del texto */
+  --seisminds-bottom: 55px; /* Posición vertical del texto */
+  --seisminds-font-size: 50px; /* Tamaño de la fuente */
+}
+
+/* Contenedor principal que ocupa toda la pantalla */
+.home-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh; /* 100% de la altura de la ventana */
+  background: linear-gradient(to bottom, #111827, #1f2937); /* Gradiente de oscuro a claro de arriba a abajo */
+  color: white;
+  text-align: center;
+  padding: 10 50px;
+  font-family: 'Trebuchet MS', sans-serif;
+  position: relative; /* Para permitir posicionamiento absoluto de los elementos */
+}
+
+/* Estilo del título */
+.titulo-container h1 {
+  position: absolute; /* Aísla el título del flujo del documento */
+  top: 5%; /* Ajusta la distancia desde la parte superior */
+  left: 5%;  /*ajusta la distnacia desde la izquierda */
+  font-size: 90px;
+  font-weight: bold;
+  text-transform: uppercase;
+  color: #e5e7eb;
+  margin: 0; /* Elimina cualquier margen que afecte a otros elementos */
+  padding: 0;
+}
+
+/* Posicionamiento absoluto de las imágenes */
+.centro-imagen {
+  position: relative; /* Contenedor que permite el uso de position: absolute en los hijos */
+  width: 100%; /* Para que las imágenes puedan colocarse dentro del ancho completo */
+  height: 400px; /* Ajusta el alto según tus necesidades */
+}
+
+/* Imagen de Marte */
+.marte-img {
+  position: absolute; /* Posicionamiento independiente de los demás elementos */
+  left: var(--marte-left); /* Usa la variable de posición horizontal */
+  bottom: var(--marte-bottom); /* Usa la variable de posición vertical */
+  width: var(--marte-size); /* Usa la variable de tamaño */
+  height: auto;
+}
+
+/* Imagen de la Luna */
+.luna-img {
+  position: absolute; /* Posicionamiento independiente */
+  left: var(--luna-left); /* Usa la variable de posición horizontal */
+  bottom: var(--luna-bottom); /* Usa la variable de posición vertical */
+  width: var(--luna-size); /* Usa la variable de tamaño */
+  height: auto;
+  z-index: 2; /* La Luna sobre Marte */
+}
+
+/* Imagen del Astronauta */
+.astronauta-img {
+  position: absolute; /* Posicionamiento independiente */
+  right: var(--astronauta-right); /* Usa la variable de posición horizontal */
+  top: var(--astronauta-top); /* Usa la variable de posición vertical */
+  width: var(--astronauta-size); /* Usa la variable de tamaño */
+  height: auto;
+}
+
+/* Posicionamiento absoluto del botón */
+.boton-container {
+  position: absolute;
+  bottom: var(--boton-bottom); /* Usa la variable de posición vertical */
+  width: var(--boton-width); /* Usa la variable de ancho */
+  display: flex;
+  justify-content: center; /* Centra el botón horizontalmente */
+}
+
+/* Estilo del botón con gradiente difuminado */
+.boton-mision {
+  padding: var(--boton-padding); /* Usa la variable de padding */
+  background: linear-gradient(100deg, #17294d, #2858b8); /* Gradiente de azul oscuro a más claro */
+  color: white;
+  border: none;
+  border-radius: 50px; /* Botón más redondeado */
+  font-size: var(--boton-font-size); /* Usa la variable de tamaño de fuente */
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.4);
+  transition: background 0.3s ease, transform 0.3s ease;
+}
+
+.boton-mision:hover {
+  background: linear-gradient(135deg, #60a5fa, #3b82f6);
+  transform: scale(1.05);
+}
+
+/* Texto difuminado "SEISMinds" */
+.seisminds-text {
+  position: absolute;
+  bottom: var(--seisminds-bottom); /* Usa la variable de posición vertical */
+  right: var(--seisminds-right); /* Usa la variable de posición horizontal */
+  font-size: var(--seisminds-font-size); /* Usa la variable de tamaño de fuente */
+  color: rgba(255, 255, 255, 0.3); /* Color blanco más difuminado */
+  font-weight: bold;
+  letter-spacing: 2px;
+  text-shadow: 0 0 15px rgba(255, 255, 255, 0.2); /* Sombra difuminada */
+}
+
+/* Para que se vea bien en pantallas más pequeñas */
+@media (max-width: 768px) {
+  .titulo-container h1 {
+    font-size: 24px;
+  }
+
+  .boton-mision {
+    font-size: 18px;
+    padding: 15px 30px;
+  }
+
+  .seisminds-text {
+    font-size: 24px;
+  }
+}
