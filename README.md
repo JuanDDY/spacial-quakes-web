@@ -70,5 +70,12 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/d
 This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
 
 
+Descargar las dependencias necesarias
+Opcion 1
+### npm install
+
+Opcion 2
+### npm install react-router-dom --save
+### npm install react-bootstrap bootstrap
 ### npm install globe.gl
 ### npm install globe.gl d3-scale

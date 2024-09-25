@@ -17,11 +17,11 @@ function GlobeComponent() {
 
         
     const moon = Globe()
-      .globeImageUrl('/images/lunar_surface.jpg')  // Usar la imagen importada
-      //.bumpImageUrl('/images/mars_bumpmap8k.jpg')
+      .globeImageUrl('/images/lunar_surface.jpg')  // Para IKER: Cambiar aca la imagen de lo que se quiera grafica
+      .bumpImageUrl('/images/lunar_bumpmap.jpg')
       .backgroundImageUrl('//unpkg.com/three-globe/example/img/night-sky.png')
       .showGraticules(true)
-      .showAtmosphere(false) // Moon has no atmosphere
+      .showAtmosphere(false) 
       .labelText('label')
       .labelSize(1.7)
       .labelDotRadius(0.4)

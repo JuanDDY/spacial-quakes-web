@@ -1,11 +1,22 @@
 import React from 'react';
-import GlobeComponent from './components/GlobeComponent'; // Asegúrate de que la ruta es correcta
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import 'bootstrap/dist/css/bootstrap.min.css';
+
+import GlobeComponent from './components/GlobeComponent'; 
+import NavBar from './components/NavBar'; 
+import Home from './components/Home'; 
 
 function App() {
   return (
     <div className="App">
-      <h1>Globo 3D de la Luna</h1>
-      <GlobeComponent />
+      <NavBar></NavBar>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/home" element={<Home />} />
+          <Route path="/simulate" element={<GlobeComponent />} />
+        </Routes>
+      </BrowserRouter>
     </div>
   );
 }
