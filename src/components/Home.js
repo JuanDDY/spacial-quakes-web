@@ -1,4 +1,4 @@
-import './Home.css'; // Asegúrate de crear este archivo CSS para aplicar los estilos
+import './Home.css'; 
 
 function Home() {
   return (
