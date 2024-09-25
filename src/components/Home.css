@@ -41,15 +41,16 @@
 /* Estilo del título */
 .titulo-container h1 {
   position: absolute; 
-  top: 5%; /* distancia desde la parte superior */
-  left: 5%;  /*distnacia desde la izquierda */
-  font-size: 90px;
-  font-weight: fantasy;
-  text-transform: uppercase;
+  top: 0%; /* distancia desde la parte superior */
+  left: 5%; /* distancia desde la izquierda */
+  font-size: 110px;
+  font-weight: 700; 
+  font-family: 'Anton', sans-serif; 
   color: #e5e7eb;
-  margin: 0; 
+  margin: 0;
   padding: 0;
 }
+
 
 /* Posicionamiento absoluto de las imágenes */
 .centro-imagen {
