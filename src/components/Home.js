@@ -12,7 +12,7 @@ function Home() {
       <div className="centro-imagen">
         <img src="imagesHome/marte_home2.png" alt="Marte" className="marte-img" />
         <img src="imagesHome/luna_home2.png" alt="Luna" className="luna-img" />
-        <img src="imagesHome/atronauta2.png" alt="Astronauta" className="astronauta-img" />
+        <img src="imagesHome/astronauta4.png" alt="Astronauta" className="astronauta-img" />
       </div>
 
       {/* Botón centrado */}

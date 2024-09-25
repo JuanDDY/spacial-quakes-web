@@ -1,16 +1,17 @@
 :root {
   /* Variables de posición y tamaño para las imágenes */
   --marte-left: 10%; /* Posición horizontal de Marte */
-  --marte-bottom: -31%; /* Posición vertical de Marte */
+  --marte-bottom: -20%; /* Posición vertical de Marte */
   --marte-size: 650px; /* Tamaño de Marte */
 
-  --luna-left: 30%; /* Posición horizontal de la Luna */
-  --luna-bottom: -23%; /* Posición vertical de la Luna */
-  --luna-size: 550px; /* Tamaño de la Luna */
+  --luna-left: 35%; /* Posición horizontal de la Luna */
+  --luna-bottom: 0%; /* Posición vertical de la Luna */
+  --luna-size: 500px; /* Tamaño de la Luna */
 
-  --astronauta-right: 5%; /* Posición horizontal del Astronauta */
-  --astronauta-top: -20%; /* Posición vertical del Astronauta */
-  --astronauta-size: 700px; /* Tamaño del Astronauta */
+
+  --astronauta-right: 4%; /* Posición horizontal del Astronauta */
+  --astronauta-top:  -60%; /* Posición vertical del Astronauta */
+  --astronauta-size: 950px; /* Tamaño del Astronauta */
 
   /* Variables para la posición y tamaño del botón */
   --boton-bottom: 7%; /* Posición vertical del botón */
@@ -31,7 +32,9 @@
   align-items: center;
   justify-content: center;
   height: 100vh; 
-  background: linear-gradient(to bottom, #111827, #1f2937); 
+  background: linear-gradient(to bottom, #000407, #042431); 
+  transition: background 0.3s ease, transform 1s ease;
+
   text-align: center;
   padding: 10 50px;
   font-family: 'Trebuchet MS', sans-serif;
@@ -42,9 +45,9 @@
 .titulo-container h1 {
   position: absolute; 
   top: 0%; /* distancia desde la parte superior */
-  left: 5%; /* distancia desde la izquierda */
-  font-size: 110px;
-  font-weight: 700; 
+  left: 10%; /* distancia desde la izquierda */
+  font-size: 90px;
+  font-weight: 1000; 
   font-family: 'Anton', sans-serif; 
   color: #e5e7eb;
   margin: 0;
@@ -59,32 +62,67 @@
   height: 400px; 
 }
 
-/* Imagen de Marte */
+
+/* Imagen de Marte como botón */
 .marte-img {
-  position: absolute; 
-  left: var(--marte-left); 
-  bottom: var(--marte-bottom); 
-  width: var(--marte-size); 
+  position: absolute;
+  left: var(--marte-left);
+  bottom: var(--marte-bottom);
+  width: var(--marte-size);
   height: auto;
+  z-index: 2; /* Imagen sobre la sombra */
+  transition: transform 0.3s ease, filter 0.3s ease;
+  cursor: pointer; /* El cursor cambia a pointer */
 }
 
-/* Imagen de la Luna */
+/* Efecto hover para Marte */
+.marte-img:hover {
+  transform: scale(1.1); /* Agranda la imagen */
+  filter: brightness(0.7); /* Oscurece la imagen */
+}
+
+/* Imagen de la Luna como botón */
 .luna-img {
   position: absolute;
-  left: var(--luna-left); 
-  bottom: var(--luna-bottom); 
-  width: var(--luna-size); 
+  left: var(--luna-left);
+  bottom: var(--luna-bottom);
+  width: var(--luna-size);
   height: auto;
-  z-index: 2; /* La Luna sobre Marte */
+  z-index: 2; /* Imagen sobre la sombra */
+  transition: transform 0.3s ease, filter 0.3s ease;
+  cursor: pointer; /* El cursor cambia a pointer */
 }
 
-/* Imagen del Astronauta */
+/* Efecto hover para la Luna */
+.luna-img:hover {
+  transform: scale(1.1); /* Agranda la imagen */
+  filter: brightness(0.7); /* Oscurece la imagen */
+}
+
+
+/* Animación para el movimiento flotante */
+@keyframes flotar {
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+/* Imagen del Astronauta con movimiento flotante */
 .astronauta-img {
   position: absolute;
-  right: var(--astronauta-right); 
-  top: var(--astronauta-top); 
-  width: var(--astronauta-size); 
+  right: var(--astronauta-right);
+  top: var(--astronauta-top);
+  width: var(--astronauta-size);
   height: auto;
+  
+  /* Aplicamos la animación de flotación */
+  animation: flotar 4s ease-in-out infinite;
 }
 
 /* Posicionamiento absoluto del botón */
