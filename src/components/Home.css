@@ -1,15 +1,15 @@
 :root {
   /* Variables de posición y tamaño para las imágenes */
   --marte-left: 10%; /* Posición horizontal de Marte */
-  --marte-bottom: -20%; /* Posición vertical de Marte */
-  --marte-size: 550px; /* Tamaño de Marte */
+  --marte-bottom: -31%; /* Posición vertical de Marte */
+  --marte-size: 650px; /* Tamaño de Marte */
 
-  --luna-left: 28%; /* Posición horizontal de la Luna */
-  --luna-bottom: -34%; /* Posición vertical de la Luna */
-  --luna-size: 650px; /* Tamaño de la Luna */
+  --luna-left: 30%; /* Posición horizontal de la Luna */
+  --luna-bottom: -23%; /* Posición vertical de la Luna */
+  --luna-size: 550px; /* Tamaño de la Luna */
 
   --astronauta-right: 5%; /* Posición horizontal del Astronauta */
-  --astronauta-top: -70%; /* Posición vertical del Astronauta */
+  --astronauta-top: -20%; /* Posición vertical del Astronauta */
   --astronauta-size: 700px; /* Tamaño del Astronauta */
 
   /* Variables para la posición y tamaño del botón */
