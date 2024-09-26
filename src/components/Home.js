@@ -2,31 +2,29 @@ import React, { useState } from 'react';
 import './Home.css'; 
 
 function Home() {
-  // Estado para controlar la visibilidad del modal y la selección de las pestañas
   const [isMarteModalOpen, setIsMarteModalOpen] = useState(false);
   const [isLunaModalOpen, setIsLunaModalOpen] = useState(false);
   const [activeTab, setActiveTab] = useState(0); 
 
-  // Función para manejar el cambio de pestañas
   const handleNextTab = () => {
     setActiveTab((prevTab) => (prevTab + 1) % 2); 
   };
 
-  // Función para cerrar los modales
   const closeModal = () => {
     setIsMarteModalOpen(false);
     setIsLunaModalOpen(false);
-    setActiveTab(0); // Reinicia a la primera pestaña
+    setActiveTab(0);
   };
 
   return (
     <div className="home-container">
-      {/* Contenedor de título centrado */}
+      {/* GIF de fondo */}
+      <div className="background-gif"></div>
+
       <div className="titulo-container">
         <h1>Explora y detecta sismos en otros mundos</h1>
       </div>
 
-      {/* Contenedor de imágenes centrado */}
       <div className="centro-imagen">
         <img 
           src="imagesHome/marte_home2.png" 
@@ -43,12 +41,10 @@ function Home() {
         <img src="imagesHome/astronauta4.png" alt="Astronauta" className="astronauta-img" />
       </div>
 
-      {/* Botón centrado */}
       <div className="boton-container">
         <button className="boton-mision">Empezar misión</button>
       </div>
 
-      {/* Texto en la parte inferior derecha */}
       <div className="seisminds-text">
         SEISMinds
       </div>
