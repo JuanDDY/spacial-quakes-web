@@ -5,7 +5,7 @@ import GlobeComponent from "../../components/GlobeComponent"
 import SismoChart from "../../components/graficas/SismoChart.js"
 
 
-const VistaMiision1 = (props) => {
+const VistaMision1 = (props) => {
 
     console.log(props)
     return (
@@ -28,4 +28,4 @@ const VistaMiision1 = (props) => {
 }
 
 
-export default VistaMiision1;
+export default VistaMision1;

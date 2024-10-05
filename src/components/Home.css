@@ -166,7 +166,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: rgba(0, 0, 0, 0.829); /* Fondo oscuro semi-transparente */
+  background-color: rgba(0, 0, 0, 0.829); 
   z-index: 10; 
   opacity: 0;
   visibility: hidden; 
@@ -175,8 +175,8 @@
 
 
 .overlay-container.show {
-  opacity: 1; /* Muestra la superposición */
-  visibility: visible; /* Hace visible la superposición */
+  opacity: 1; 
+  visibility: visible; 
 }
 
 .misiones-container {

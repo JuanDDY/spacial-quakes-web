@@ -10,6 +10,7 @@ function NavBar() {
           <Navbar.Brand href="/home">Home</Navbar.Brand>
           <Navbar.Brand href="/simulate">Simulacion</Navbar.Brand>
           <Navbar.Brand href="/grafica">Grafica</Navbar.Brand>
+          <Navbar.Brand href="/modelo">Modelo</Navbar.Brand>
           <Navbar.Brand href="/mision1">Mision1</Navbar.Brand>
           <Navbar.Brand href="/mision2">Mision2</Navbar.Brand>
 

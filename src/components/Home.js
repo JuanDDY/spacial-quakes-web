@@ -5,7 +5,7 @@ function Home() {
   const [isMarteModalOpen, setIsMarteModalOpen] = useState(false);
   const [isLunaModalOpen, setIsLunaModalOpen] = useState(false);
   const [activeTab, setActiveTab] = useState(0);
-  const [showOverlay, setShowOverlay] = useState(false); // Para los botones de misión
+  const [showOverlay, setShowOverlay] = useState(false); 
 
   const handleNextTab = () => {
     setActiveTab((prevTab) => (prevTab + 1) % 2);
