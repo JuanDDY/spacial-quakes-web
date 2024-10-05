@@ -79,3 +79,5 @@ Opcion 2
 ### npm install react-bootstrap bootstrap
 ### npm install globe.gl
 ### npm install globe.gl d3-scale
+### npm install d3
+### npm install csv-parse

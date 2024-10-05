@@ -1,0 +1,5 @@
+.sismo-chart {
+     /* Mismo fondo que el planeta */
+    background-size: cover; /* Asegurarse de que el fondo cubra todo el área */
+    border-radius: 10px; /* Opcional, bordes redondeados */
+  }
