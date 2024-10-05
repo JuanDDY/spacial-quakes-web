@@ -6,10 +6,12 @@ import GlobeComponent from './components/GlobeComponent';
 import NavBar from './components/NavBar'; 
 import Home from './components/Home'; 
 
-import SismoChart from './components/SismoChart'; 
-import Graffic2 from './components/Graffic2'; 
+import SismoChart from './components/graficas/SismoChart'; 
+import Graffic2 from './components/graficas/Graffic2'; 
 
-import * as d3 from 'd3';
+
+import VistaMision1 from './components/vistaMision1/VistaMision1'; 
+import VistaMision2 from './components/vistaMision2/VistaMision2'; 
 
 
 /*
@@ -34,20 +36,9 @@ console.log(datitos);
 
 function App() {
   
-  const [data, setData] = useState([]);
+  const [dataAddress, setDataAddres] = useState("/dataProvisional/pruebas.csv");
 
-  useEffect(() => {
-    // D3 puede manejar el formato ISO 8601 directamente
-    d3.csv("/dataProvisional/pruebas1000.csv").then(data => {
-      const parsedData = data.map(d => ({
-        time: new Date(+d.time * 1000),  // Convertir el tiempo Unix a milisegundos
-        amplitude: +d.amplitude  // Asegurarse de que la amplitud sea un número
-      }));
-      console.log(parsedData)
-      setData(parsedData);
-    });
-  }, []);
-  
+   
 
   return (
     <div className="App">
@@ -57,7 +48,9 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/home" element={<Home />} />
           <Route path="/simulate" element={<GlobeComponent />} />
-          <Route path="/grafica" element={<SismoChart data={data} />} />
+          <Route path="/grafica" element={<SismoChart dataAddress={dataAddress} />} />
+          <Route path="/mision1" element={<VistaMision1 dataAddress={dataAddress}/>} />
+          <Route path="/mision2" element={<VistaMision2 dataAddress={dataAddress} />} />
         </Routes>
       </BrowserRouter>
     </div>

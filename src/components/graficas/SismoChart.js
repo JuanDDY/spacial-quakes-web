@@ -1,8 +1,28 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import * as d3 from 'd3';
+import "./SismoChart.css"
 
-const SismoChart = ({ data }) => {
+const SismoChart = ( props ) => {
   const chartRef = useRef(null);
+
+  console.log("Cisas")
+  console.log(props);
+  console.log(props.dataAddress)
+
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    // D3 puede manejar el formato ISO 8601 directamente
+    d3.csv(props.dataAddress).then(data => {
+      const parsedData = data.map(d => ({
+        time: new Date(+d.time * 1000),  // Convertir el tiempo Unix a milisegundos
+        amplitude: +d.amplitude  // Asegurarse de que la amplitud sea un número
+      }));
+      console.log(parsedData)
+      setData(parsedData);
+    });
+  }, [props.dataAddress]);
+
 
   useEffect(() => {
     // Establecer las dimensiones y márgenes del gráfico
@@ -28,11 +48,20 @@ const SismoChart = ({ data }) => {
 
     // Ejes
     svg.append('g')
-      .attr('transform', `translate(0,${height})`)
-      .call(d3.axisBottom(x));
+      .attr('transform', `translate(0,${height/2})`)  // Mover el eje X al fondo
+      .call(d3.axisBottom(x))
+      .selectAll('path, line')  // Cambiar el color de los ejes a blanco
+      .attr('stroke', 'white'); 
 
     svg.append('g')
-      .call(d3.axisLeft(y));
+      .attr('transform', `translate(0,0)`) 
+      .call(d3.axisLeft(y))
+      .selectAll('path, line')  // Cambiar el color del eje Y a blanco
+      .attr('stroke', 'white');
+
+    //Texto ejes
+    svg.selectAll('text')
+      .attr('fill', 'white');
 
     // Línea del gráfico
     const line = d3.line()

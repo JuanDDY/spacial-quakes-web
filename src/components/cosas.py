@@ -1,5 +1,6 @@
 import obspy
 import pandas as pd  # Asegúrate de importar pandas
+import datetime
 
 # Leer archivo .mseed
 stream = obspy.read("C:/Users/surface/talleres/nasa/spacial-earthquakes/public/dataProvisional/complete_stream.mseed")
@@ -10,4 +11,8 @@ values = stream[0].data  # obtener los valores de amplitud
 df = pd.DataFrame({'time': data, 'amplitude': values})
 
 # Guardar como CSV
-df.to_csv("C:/Users/surface/talleres/nasa/spacial-earthquakes/public/dataProvisional/pruebas1.csv", index=False)
+#df.to_csv("C:/Users/surface/talleres/nasa/spacial-earthquakes/public/dataProvisional/pruebas1.csv", index=False)
+
+print(stream[0])
+
+

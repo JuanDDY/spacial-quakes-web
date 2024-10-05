@@ -1,0 +1,34 @@
+
+  
+  /* Menú desplegable sobre el fondo */
+  .menu-desplegable {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    z-index: 10;
+  }
+  
+
+  
+  .vista-mision-container {
+    position: relative;
+    width: 100%;
+    height: 100vh; /* Asegurarse de ocupar toda la altura */
+    overflow: hidden;
+  }
+  
+  .globo-mision1 {
+    position: relative;
+    height: 100%; /* Ocupa todo el espacio disponible en la columna */
+  }
+  
+  .globo-container {
+    width: 100%;
+    height: 100%;
+  }
+  
+  .grafica-mision1 {
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  }
