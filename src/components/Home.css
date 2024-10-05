@@ -129,6 +129,8 @@
   justify-content: center; 
 }
 
+
+
 /* Estilo del botón con gradiente difuminado */
 .boton-mision {
   padding: var(--boton-padding);
@@ -147,6 +149,91 @@
   background: linear-gradient(135deg, #60a5fa, #3b82f6);
   transform: scale(1.05);
 }
+
+/* Efecto de difuminado en el fondo cuando la misión comienza */
+.blur-background {
+  filter: blur(100px);
+  pointer-events: none; 
+}
+
+/* Estilos para la superposición que contiene los botones y el texto */
+.overlay-container {
+  position: fixed; 
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.829); /* Fondo oscuro semi-transparente */
+  z-index: 10; 
+  opacity: 0;
+  visibility: hidden; 
+  transition: background 0.3s ease, transform 0.3s ease;
+}
+
+
+.overlay-container.show {
+  opacity: 1; /* Muestra la superposición */
+  visibility: visible; /* Hace visible la superposición */
+}
+
+.misiones-container {
+  text-align: center;
+  color: white;
+}
+
+.botones-mision {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 20px;
+}
+
+.boton-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.boton-mision1,
+.boton-mision2,
+.boton-modelo {
+  padding: 15px 30px;
+  font-size: 18px;
+  background: linear-gradient(100deg, #17294d, #2858b8); 
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+  width: 150px;
+  height: 50px;
+  
+}
+
+.boton-mision1:hover,
+.boton-mision2:hover,
+.boton-modelo:hover {
+  transform: scale(1.1);
+}
+
+.mission-info {
+  display: none; 
+  position: absolute;
+  bottom: px;
+  left: 0%;
+  transform: translateX(-10%);
+  width: 200px;
+  color: white;
+  padding: 0px;
+  border-radius: 0px;
+  text-align: center;
+}
+
+.boton-wrapper:hover .mission-info {
+  display: block; 
+}
+
 
 /* Texto difuminado "SEISMinds" */
 .seisminds-text {
@@ -173,7 +260,7 @@
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); 
 }
 
-/* Botón de cerrar */
+/* Botón de cerrar para marte y luna*/
 .close-button {
   position: absolute;
   top: 10px;
