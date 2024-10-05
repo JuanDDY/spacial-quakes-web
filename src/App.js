@@ -6,6 +6,8 @@ import GlobeComponent from './components/GlobeComponent';
 import NavBar from './components/NavBar'; 
 import Home from './components/Home'; 
 
+import Modelo from './components/modelo/modelo'; 
+
 import SismoChart from './components/graficas/SismoChart'; 
 import Graffic2 from './components/graficas/Graffic2'; 
 
@@ -48,6 +50,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/home" element={<Home />} />
           <Route path="/simulate" element={<GlobeComponent />} />
+          <Route path="/modelo" element={<Modelo dataAddress={dataAddress} />} /> 
           <Route path="/grafica" element={<SismoChart dataAddress={dataAddress} />} />
           <Route path="/mision1" element={<VistaMision1 dataAddress={dataAddress}/>} />
           <Route path="/mision2" element={<VistaMision2 dataAddress={dataAddress} />} />
