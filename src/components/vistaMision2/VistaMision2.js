@@ -1,14 +1,18 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState} from 'react';
 import Globe from 'globe.gl';
 import * as d3 from 'd3-scale';
-import { Dropdown, Row, Col } from 'react-bootstrap';
+import { Card, Collapse, Button, Row, Col } from 'react-bootstrap';
 
 import SismoChart from '../../components/graficas/SismoChart.js';
 import './vistaMision2.css'; // Archivo CSS para estilos adicionales.
 
 function VistaMision2(props) {
+
   const globeEl = useRef();
   const containerRef = useRef(); // Referencia al contenedor de la columna
+
+  const [open, setOpen] = useState(false);
+
 
   useEffect(() => {
     const colorScale = d3.scaleOrdinal(['orangered', 'mediumblue', 'darkgreen', 'yellow']);
@@ -61,17 +65,30 @@ function VistaMision2(props) {
   return (
     <div className="vista-mision-container" style={{background: "black"}}>
       {/* Menú desplegable encima del planeta */}
-      <Dropdown className="menu-desplegable">
-        <Dropdown.Toggle variant="secondary" id="dropdown-basic">
-          Opciones de Misión
-        </Dropdown.Toggle>
-
-        <Dropdown.Menu>
-          <Dropdown.Item href="#/action-1">Ver Misión Apollo</Dropdown.Item>
-          <Dropdown.Item href="#/action-2">Ver Misión Luna</Dropdown.Item>
-          <Dropdown.Item href="#/action-3">Ver Misión Marte</Dropdown.Item>
-        </Dropdown.Menu>
-      </Dropdown>
+      return (
+    <div className="menu-desplegable">
+    
+      <Button
+        onClick={() => setOpen(!open)}
+        aria-controls="example-collapse-text"
+        aria-expanded={open}
+      >
+        click
+      </Button>
+      <div style={{ minHeight: '150px' }}>
+        <Collapse in={open} dimension="width">
+          <div id="example-collapse-text">
+            <Card body style={{ width: '400px' }}>
+              Anim pariatur cliche reprehenderit, enim eiusmod high life
+              accusamus terry richardson ad squid. Nihil anim keffiyeh
+              helvetica, craft beer labore wes anderson cred nesciunt sapiente
+              ea proident.
+            </Card>
+          </div>
+        </Collapse>
+      </div>
+    </div>
+  );
 
       {/* Contenedor del planeta y la gráfica */}
       <Row className="content">
@@ -80,8 +97,16 @@ function VistaMision2(props) {
         </Col>
 
         <Col xs={12} md={5} lg={5} xl={5} className="grafica-mision1">
-          <SismoChart {...props} />
+            <Row>
+                <Col xs={12} md={12} lg={12} xl={12}>
+                    <SismoChart {...props} />
+                </Col>
+                <Col xs={12} md={12} lg={12} xl={12}>
+                    <h1>acaco</h1>
+                </Col>
+            </Row>
         </Col>
+        
       </Row>
     </div>
   );
