@@ -9,7 +9,7 @@ function NavBar() {
         <Container>
           <Navbar.Brand href="/home">Home</Navbar.Brand>
           <Navbar.Brand href="/simulate">Simulacion</Navbar.Brand>
-          
+          <Navbar.Brand href="/grafica">Grafica</Navbar.Brand>
             <Nav className="me-auto">
               <Nav.Link href="/home">Home</Nav.Link>
               <Nav.Link href="/simulate">Simulacion</Nav.Link>

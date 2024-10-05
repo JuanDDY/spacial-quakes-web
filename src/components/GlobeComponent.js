@@ -16,8 +16,8 @@ function GlobeComponent() {
     ]); // Avoid label collisions
 
         
-    const moon = Globe()
-      .globeImageUrl('/images/lunar_surface.jpg')  // Para IKER: Cambiar aca la imagen de lo que se quiera grafica
+    const planet = Globe()
+      .globeImageUrl('/images/2k_mars.jpg')  // Para IKER: Cambiar aca la imagen de lo que se quiera grafica
       .bumpImageUrl('/images/lunar_bumpmap.jpg')
       .backgroundImageUrl('//unpkg.com/three-globe/example/img/night-sky.png')
       .showGraticules(true)
@@ -35,13 +35,13 @@ function GlobeComponent() {
       .onLabelClick(d => window.open(d.url, '_blank'));
 
     // Render the globe in the element referenced by globeEl
-    moon(globeEl.current);
+    planet(globeEl.current);
 
     // Fetch and update the landing sites data
     fetch('/path-to/moon_landings.json')
       .then(r => r.json())
       .then(landingSites => {
-        moon.labelsData(landingSites);
+        planet.labelsData(landingSites);
       });
   }, []);
 
