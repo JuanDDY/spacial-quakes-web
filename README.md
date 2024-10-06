@@ -71,8 +71,12 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/t
 
 
 Descargar las dependencias necesarias
+
+descargar node
+
 Opcion 1
 ### npm install
+### npm start
 
 Opcion 2
 ### npm install react-router-dom --save
@@ -81,3 +85,4 @@ Opcion 2
 ### npm install globe.gl d3-scale
 ### npm install d3
 ### npm install csv-parse
+### npm start
