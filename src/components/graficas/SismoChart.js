@@ -11,16 +11,19 @@ const SismoChart = (props) => {
     // Cargar los datos de CSV
     d3.csv(props.dataAddress).then(data => {
       const parsedData = data.map(d => ({
-        time: new Date(+d.time * 1000),  // Convertir el tiempo Unix a milisegundos
+        time: new Date(+d.time *1000000),  // Convertir el tiempo Unix a milisegundos
         amplitude: +d.amplitude  // Asegurarse de que la amplitud sea un número
       }));
       setData(parsedData);
     });
   }, [props.dataAddress]);
 
+  
+
   useEffect(() => {
     // Actualizar los datos que se muestran según el timeOffset
-    const offsetData = data.slice(props.timeOffset, props.timeOffset + 1000); // Muestra un rango de 1000 puntos
+    const offsetData = data.slice(props.timeOffset, props.timeOffset + 300); 
+    
     setDisplayData(offsetData);
   }, [data, props.timeOffset]);
 

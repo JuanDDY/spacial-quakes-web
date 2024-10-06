@@ -14,7 +14,7 @@ function VistaMision2(props) {
   const [currentQuestion, setCurrentQuestion] = useState(1);
   const totalQuestions = 10;
   const [showModal, setShowModal] = useState(false);
-
+  
   const [timeOffset, setTimeOffset] = useState(0); // Offset de tiempo para el movimiento de la gráfica
 
   useEffect(() => {
@@ -88,7 +88,16 @@ function VistaMision2(props) {
 
   return (
     <div className="vista-mision-container" style={{ background: "black" }}>
-      <h1 style={{ color: 'white', textAlign: 'center', marginTop: '20px' }}>Identifica qué es ruido y qué es sismo</h1>
+      <h1 style={{ 
+        color: 'white',
+        textAlign: 'center',
+        marginTop: '20px', 
+        width: '1050px', 
+        height: '50px',
+        fontSize: '60px',
+        marginLeft: '100px',
+        fontWeight: 600
+       }}>Identifica qué es ruido y qué es sismo</h1>
 
       <div className="menu-desplegable" style={{ position: 'relative' }}>
         <Button 
@@ -154,12 +163,14 @@ function VistaMision2(props) {
                     width: '200px', 
                     height: '190px', 
                     borderRadius: '50%', 
-                    fontSize: '20px', 
+                    fontSize: '30px', 
                     backgroundColor: '#00bfa5', 
                     border: 'none', 
                     color: 'white', 
                     display: 'inline-block',
-                    margin: '10px' 
+                    margin: '10px',
+                    fontWeight: 600
+ 
                   }}>
                   Sismo
                 </Button>
@@ -170,12 +181,13 @@ function VistaMision2(props) {
                     width: '200px', 
                     height: '190px', 
                     borderRadius: '50%', 
-                    fontSize: '20px', 
+                    fontSize: '30px', 
                     backgroundColor: '#7178df', 
                     border: 'none', 
                     color: 'white', 
                     display: 'inline-block',
-                    margin: '10px' 
+                    margin: '10px',
+                    fontWeight: 600
                   }}>
                   Ruido
                 </Button>
