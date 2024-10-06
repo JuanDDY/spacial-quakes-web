@@ -15,6 +15,7 @@ import Graffic2 from './components/graficas/Graffic2';
 import VistaMision1 from './components/vistaMision1/VistaMision1'; 
 import VistaMision2 from './components/vistaMision2/VistaMision2'; 
 
+import VistaMisionxx from './components/vistaMision1/VistaMisionxx'; 
 
 /*
 async function loadCSV(url) {
@@ -38,7 +39,7 @@ console.log(datitos);
 
 function App() {
   
-  const [dataAddress, setDataAddres] = useState("/dataProvisional/pruebas.csv");
+  const [dataAddress, setDataAddres] = useState("/dataProvisional/pruebas1000.csv");
 
    
 
@@ -52,7 +53,7 @@ function App() {
           <Route path="/simulate" element={<GlobeComponent />} />
           <Route path="/modelo" element={<Modelo dataAddress={dataAddress} />} /> 
           <Route path="/grafica" element={<SismoChart dataAddress={dataAddress} />} />
-          <Route path="/mision1" element={<VistaMision1 dataAddress={dataAddress}/>} />
+          <Route path="/mision1" element={<VistaMisionxx dataAddress={dataAddress}/>} />
           <Route path="/mision2" element={<VistaMision2 dataAddress={dataAddress} />} />
         </Routes>
       </BrowserRouter>
