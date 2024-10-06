@@ -127,7 +127,9 @@ function VistaMision2(props) {
         height: '50px',
         fontSize: '60px',
         marginLeft: '100px',
-        fontWeight: 600
+        fontWeight: 600,
+        position: 'absolute',
+        zIndex: 10
        }}>Identifica qué es ruido y qué es sismo</h1>
 
       <div className="menu-desplegable">
