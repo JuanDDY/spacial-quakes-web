@@ -17,23 +17,30 @@ function VistaMisionxx(props) {
     planetAddress : '/images/lunar_surface.jpg',
     colorOndas : (t => `rgba(255,0,0,1)`)
   })
-   
-
-  const [open, setOpen] = useState(false);
   const [coordenadas, setCoordenadas] = useState({lat : 0, long: 0, disponibles: false});
   const [openSelectParamters, setOpenSelectParamters] = useState(false);
   const [showModal, setShowModal] = useState(true);
   const [formData, setFormData] = useState({
-    magnitude: '',
-    propagationSpeed: ''
+    calidad: 'A' // Valor por defecto para la calidad
   });
   const [parametersConfirmed, setParametersConfirmed] = useState(false);
   const [dataEnMano, setDataEnMano] = useState(false);
+  
 
   const handleCloseModal = () => setShowModal(false);
   
   const handleFormSubmit = (e) => {
     e.preventDefault();
+    const newSismo = {
+      lat: coordenadas.lat,
+      lng: coordenadas.long,
+      maxR: formData.magnitude ? Number(formData.magnitude) : 20,
+      propagationSpeed: formData.propagationSpeed ? Number(formData.propagationSpeed) : 5,
+      repeatPeriod: 600
+    };
+    setDataEnMano(true);
+    // Agregar nuevo sismo
+    setSismos([...sismos, newSismo]);
     setParametersConfirmed(true); // Confirmar parámetros
     setOpenSelectParamters(false); // Cerrar el collapse de los parámetros
   };
@@ -45,11 +52,11 @@ function VistaMisionxx(props) {
       [name]: value
     });
   };
-    
+
+  const [sismos, setSismos] = useState([]);
+  
 
   useEffect(() => {
-        
-    const colorInterpolator = infoRender.colorOndas;
 
     const planet = Globe()
       .globeImageUrl(infoRender.planetAddress)
@@ -59,7 +66,6 @@ function VistaMisionxx(props) {
       .showAtmosphere(false)
       
       //Captura de coordenadas con click
-      .onLabelClick(d => window.open(d.url, '_blank'))
       .onGlobeClick(({ lat, lng }) => {
         // Al hacer clic en el globo, capturar las coordenadas
         setCoordenadas({ lat: lat, long: lng, disponibles: true });
@@ -111,8 +117,14 @@ function VistaMisionxx(props) {
       .ringColor(() => infoRender.colorOndas)
       .ringMaxRadius('maxR')
       .ringPropagationSpeed('propagationSpeed')
-      .ringRepeatPeriod('repeatPeriod');
-
+      .ringRepeatPeriod('repeatPeriod')
+      
+      .onGlobeClick(({ lat, lng }) => {
+        // Al hacer clic en el globo, capturar las coordenadas
+        setCoordenadas({ lat: lat, long: lng, disponibles: true });
+        setOpenSelectParamters(true); // Abre el formulario para ingresar los parámetros
+        setParametersConfirmed(false); // Deshabilitar visualización de sismos hasta que se confirmen los parámetros
+      });
     planet(globeEl.current);
 
     // Ajustar el tamaño del globo para que se ajuste a la columna contenedora
@@ -186,33 +198,22 @@ function VistaMisionxx(props) {
               <div id="example-collapse-text">
                 <Card body style={{ width: '400px' }}>
                   <Form onSubmit={handleFormSubmit}>
-                    <Form.Group controlId="formMagnitude">
-                      <Form.Label>Magnitud del Sismo</Form.Label>
+                    <Form.Group controlId="formCalidad">
+                      <Form.Label>Calidad del Sismo</Form.Label>
                       <Form.Control
-                        type="number"
-                        name="magnitude"
-                        value={formData.magnitude}
+                        as="select"
+                        name="calidad"
+                        value={formData.calidad}
                         onChange={handleInputChange}
                         required
-                        min="1"
-                        max="20"
-                      />
+                      >
+                        <option value="A">A</option>
+                        <option value="B">B</option>
+                        <option value="C">C</option>
+                      </Form.Control>
                     </Form.Group>
 
-                    <Form.Group controlId="formPropagationSpeed">
-                      <Form.Label>Velocidad de Propagación</Form.Label>
-                      <Form.Control
-                        type="number"
-                        name="propagationSpeed"
-                        value={formData.propagationSpeed}
-                        onChange={handleInputChange}
-                        required
-                        min="1"
-                        max="10"
-                      />
-                    </Form.Group>
-
-                    <Button variant="primary" type="submit" onClick={() => setDataEnMano(true)}>
+                    <Button variant="primary" type="submit">
                       Confirmar Parámetros
                     </Button>
                   </Form>

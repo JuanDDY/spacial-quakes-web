@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import './Home.css';
+import { Link } from "react-router-dom";
 
 function Home() {
   const [isMarteModalOpen, setIsMarteModalOpen] = useState(false);
@@ -56,7 +57,9 @@ function Home() {
       </div>
 
       <div className="seisminds-text">
-        SEISMinds
+        <Link to="/descripcion/">
+          SEISMinds
+        </Link>
       </div>
 
       {/* Modal de Marte */}
@@ -125,19 +128,46 @@ function Home() {
             <p>Aquí encontrarás los elementos necesarios para saber todo sobre los sismos en Marte y la Luna.</p>
             <div className="botones-mision">
               <div className="boton-wrapper">
-                <button className="boton-mision1">Misión 1</button>
+                <Link to="/mision1/">
+                  <button 
+                    className="boton-mision1"
+                    href="/mision1"
+                  >
+                    Misión 1
+                  </button>
+                </Link>
+                
                 <div className="mission-info">
                   <p>Señales con ruido y ondas filtradas para los sismos</p>
                 </div>
               </div>
+
               <div className="boton-wrapper">
-                <button className="boton-mision2">Misión 2</button>
+                <Link to="/mision2/">
+                  <button 
+                    className="boton-mision2"
+                    href="/mision2"
+                  >
+                    Misión 2
+                  </button>
+                </Link>
+                
                 <div className="mission-info">
                   <p>Ondas aleatorias para que el usario intente detectar si es un sismo</p>
                 </div>
               </div>
+
               <div className="boton-wrapper">
-                <button className="boton-modelo">Modelo</button>
+                <Link to="/modelo/">
+                  <button 
+                    className="boton-modelo"
+                    href="/modelo"
+                  >
+                    Modelo
+                  </button>
+                </Link>
+                
+
                 <div className="mission-info">
                   <p>Explora el modelo de detección.</p>
                 </div>
