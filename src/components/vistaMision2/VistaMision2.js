@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import Globe from 'globe.gl';
 import * as d3 from 'd3-scale';
-import { Card, Collapse, Button, Row, Col, Modal } from 'react-bootstrap';
+import { Card, Collapse, Button, Row, Col, Modal, Dropdown } from 'react-bootstrap';
 import SismoChart from '../../components/graficas/SismoChart.js';
 import './vistaMision2.css';
 
@@ -17,30 +17,36 @@ function VistaMision2(props) {
   
   const [timeOffset, setTimeOffset] = useState(0); // Offset de tiempo para el movimiento de la gráfica
 
-  useEffect(() => {
-    const colorScale = d3.scaleOrdinal(['orangered', 'mediumblue', 'darkgreen', 'yellow']);
+  const [infoRender, setInfoRender] = useState({
+    planetAddress : '/images/lunar_surface.jpg',
+    colorOndas : (t => `rgba(255,0,0,1)`)
+  })
 
-    const labelsTopOrientation = new Set([
-      'Apollo 12', 'Luna 2', 'Luna 20', 'Luna 21', 'Luna 24', 'LCROSS Probe'
-    ]);
+
+  useEffect(() => {
+
+    const N = 10;
+    const gData = [...Array(N).keys()].map(() => ({
+      lat: (Math.random() - 0.5) * 180,
+      lng: (Math.random() - 0.5) * 360,
+      maxR: Math.random() * 18 + 5,
+      propagationSpeed: Math.random() * 10 + 1,
+      repeatPeriod: Math.random() * 2000 + 200
+    }));
+
 
     const planet = Globe()
-      .globeImageUrl('/images/2k_mars.jpg')
-      .bumpImageUrl('/images/lunar_bumpmap.jpg')
-      .showGraticules(true)
+      .globeImageUrl(infoRender.planetAddress)
+      //.bumpImageUrl('/images/lunar_bumpmap.jpg')
+      .showGraticules(false)
       .showAtmosphere(false)
       .backgroundColor('#000000')
-      .labelText('label')
-      .labelSize(1.7)
-      .labelDotRadius(0.4)
-      .labelDotOrientation(d => labelsTopOrientation.has(d.label) ? 'top' : 'bottom')
-      .labelColor(d => colorScale(d.agency))
-      .labelLabel(d => `
-        <div><b>${d.label}</b></div>
-        <div>${d.agency} - ${d.program} Program</div>
-        <div>Landing on <i>${new Date(d.date).toLocaleDateString()}</i></div>
-      `)
-      .onLabelClick(d => window.open(d.url, '_blank'));
+      
+      .ringsData(gData)
+      .ringColor(() => infoRender.colorOndas)
+      .ringMaxRadius('maxR')
+      .ringPropagationSpeed('propagationSpeed')
+      .ringRepeatPeriod('repeatPeriod')
 
     planet(globeEl.current);
 
@@ -57,7 +63,7 @@ function VistaMision2(props) {
     return () => {
       window.removeEventListener('resize', resizeGlobe);
     };
-  }, []);
+  }, [infoRender]);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -88,6 +94,31 @@ function VistaMision2(props) {
 
   return (
     <div className="vista-mision-container" style={{ background: "black" }}>
+
+<div className="menu-desplegable-planeta">
+            <Dropdown drop={"end"}>
+                <Dropdown.Toggle variant="secondary" id="dropdown-basic">
+                Opciones de Misión
+                </Dropdown.Toggle>
+                <Dropdown.Menu>
+                  <Dropdown.Item 
+                     onClick={() => setInfoRender({ planetAddress: '/images/lunar_surface.jpg', 
+                                                    colorOndas : (t => `rgba(255,100,50,1)`)
+                                                  })} 
+                    className="custom-dropdown-item-luna">
+                      Ver Misión Luna
+                  </Dropdown.Item>
+                  <Dropdown.Item 
+                    onClick={() => setInfoRender({ planetAddress: '/images/2k_mars.jpg', 
+                                                  colorOndas : (t => `rgba(50, 150, 255, 1)`)
+                                                })} 
+                    className="custom-dropdown-item-marte">
+                      Ver Misión Marte
+                  </Dropdown.Item>
+                </Dropdown.Menu>
+            </Dropdown>
+        </div> 
+
       <h1 style={{ 
         color: 'white',
         textAlign: 'center',
@@ -99,7 +130,7 @@ function VistaMision2(props) {
         fontWeight: 600
        }}>Identifica qué es ruido y qué es sismo</h1>
 
-      <div className="menu-desplegable" style={{ position: 'relative' }}>
+      <div className="menu-desplegable">
         <Button 
           onClick={() => setOpen(!open)} 
           aria-controls="example-collapse-text" 

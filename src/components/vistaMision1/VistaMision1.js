@@ -4,7 +4,7 @@ import * as d3 from 'd3-scale';
 import { Modal, Dropdown, Card, Collapse, Button, Row, Col, Form } from 'react-bootstrap';
 
 import SismoChart from './SismoChart.js';
-import './vistaMision2.css'; // Archivo CSS para estilos adicionales.
+import './vistaMision1.css'; // Archivo CSS para estilos adicionales.
 
 
 
