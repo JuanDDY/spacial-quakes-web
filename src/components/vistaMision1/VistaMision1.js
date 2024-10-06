@@ -1,45 +1,71 @@
 import React, { useEffect, useRef, useState} from 'react';
 import Globe from 'globe.gl';
 import * as d3 from 'd3-scale';
-import { Dropdown, Card, Collapse, Button, Row, Col } from 'react-bootstrap';
+import { Modal, Dropdown, Card, Collapse, Button, Row, Col, Form } from 'react-bootstrap';
 
-import SismoChart from '../../components/graficas/SismoChart.js';
+import SismoChart from './SismoChart.js';
 import './vistaMision2.css'; // Archivo CSS para estilos adicionales.
 
-function VistaMision1(props) {
+
+
+function VistaMisionxx(props) {
 
   const globeEl = useRef();
   const containerRef = useRef(); // Referencia al contenedor de la columna
 
-  const [openSelectPlanet, setOpenSelectPlanet] = useState(false);
-  const [openSelectParamters, setOpenSelectParamters] = useState(false);
+  const [infoRender, setInfoRender] = useState({
+    planetAddress : '/images/lunar_surface.jpg',
+    colorOndas : (t => `rgba(255,0,0,1)`)
+  })
+   
 
+  const [open, setOpen] = useState(false);
+  const [coordenadas, setCoordenadas] = useState({lat : 0, long: 0, disponibles: false});
+  const [openSelectParamters, setOpenSelectParamters] = useState(false);
+  const [showModal, setShowModal] = useState(true);
+  const [formData, setFormData] = useState({
+    magnitude: '',
+    propagationSpeed: ''
+  });
+  const [parametersConfirmed, setParametersConfirmed] = useState(false);
+  const [dataEnMano, setDataEnMano] = useState(false);
+
+  const handleCloseModal = () => setShowModal(false);
+  
+  const handleFormSubmit = (e) => {
+    e.preventDefault();
+    setParametersConfirmed(true); // Confirmar parámetros
+    setOpenSelectParamters(false); // Cerrar el collapse de los parámetros
+  };
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: value
+    });
+  };
+    
 
   useEffect(() => {
-    const colorScale = d3.scaleOrdinal(['orangered', 'mediumblue', 'darkgreen', 'yellow']);
-
-    const labelsTopOrientation = new Set([
-      'Apollo 12', 'Luna 2', 'Luna 20', 'Luna 21', 'Luna 24', 'LCROSS Probe'
-    ]);
+        
+    const colorInterpolator = infoRender.colorOndas;
 
     const planet = Globe()
-      .globeImageUrl('/images/2k_mars.jpg')
-      .bumpImageUrl('/images/lunar_bumpmap.jpg')
+      .globeImageUrl(infoRender.planetAddress)
+      //.bumpImageUrl('/images/lunar_bumpmap.jpg')
       .backgroundImageUrl('//unpkg.com/three-globe/example/img/night-sky.png')
-      .showGraticules(true)
+      .showGraticules(false)
       .showAtmosphere(false)
-      .labelText('label')
-      .labelSize(1.7)
-      .labelDotRadius(0.4)
-      .labelDotOrientation(d => labelsTopOrientation.has(d.label) ? 'top' : 'bottom')
-      .labelColor(d => colorScale(d.agency))
-      .labelLabel(d => `
-        <div><b>${d.label}</b></div>
-        <div>${d.agency} - ${d.program} Program</div>
-        <div>Landing on <i>${new Date(d.date).toLocaleDateString()}</i></div>
-      `)
-      .onLabelClick(d => window.open(d.url, '_blank'));
-
+      
+      //Captura de coordenadas con click
+      .onLabelClick(d => window.open(d.url, '_blank'))
+      .onGlobeClick(({ lat, lng }) => {
+        // Al hacer clic en el globo, capturar las coordenadas
+        setCoordenadas({ lat: lat, long: lng, disponibles: true });
+        setOpenSelectParamters(true); // Abre el formulario para ingresar los parámetros
+        setParametersConfirmed(false); // Deshabilitar visualización de sismos hasta que se confirmen los parámetros
+      });
     // Render the globe in the element referenced by globeEl
     planet(globeEl.current);
 
@@ -57,60 +83,156 @@ function VistaMision1(props) {
     // Escuchar cambios de tamaño de la ventana
     window.addEventListener('resize', resizeGlobe);
 
+
     // Cleanup para evitar fugas de memoria
     return () => {
       window.removeEventListener('resize', resizeGlobe);
     };
-  }, []);
+  }, [infoRender]);
+
+
+
+  useEffect(() => {
+    if (!parametersConfirmed || !coordenadas.disponibles) return; // No hacer nada si los parámetros no están confirmados
+
+    const gData = [{
+      lat: coordenadas.lat,
+      lng: coordenadas.long,
+      maxR: 20,
+      propagationSpeed: 5,
+      repeatPeriod: 600
+    }];
+
+    // Agregar las ondas sísmicas al globo una vez confirmados los parámetros
+    const planet = Globe()
+      .globeImageUrl(infoRender.planetAddress)
+      .backgroundImageUrl('//unpkg.com/three-globe/example/img/night-sky.png')
+      .ringsData(gData)
+      .ringColor(() => infoRender.colorOndas)
+      .ringMaxRadius('maxR')
+      .ringPropagationSpeed('propagationSpeed')
+      .ringRepeatPeriod('repeatPeriod');
+
+    planet(globeEl.current);
+
+    // Ajustar el tamaño del globo para que se ajuste a la columna contenedora
+    const resizeGlobe = () => {
+      if (containerRef.current) {
+        const { width, height } = containerRef.current.getBoundingClientRect();
+        planet.width(width).height(height); // Ajustar el globo al tamaño del contenedor
+      }
+    };
+
+    // Ajustar el tamaño inicial
+    resizeGlobe();
+
+    // Escuchar cambios de tamaño de la ventana
+    window.addEventListener('resize', resizeGlobe);
+
+
+    // Cleanup para evitar fugas de memoria
+    return () => {
+      window.removeEventListener('resize', resizeGlobe);
+    };
+  }, [parametersConfirmed, coordenadas, infoRender, formData]);
 
 
   return (
     <div className="vista-mision-container" style={{background: "black"}}>
-    {/* Menú desplegable encima del planeta */}
-    
-        <div className="menu-desplegable">
-            <Dropdown className="menu-desplegable">
+      
+      {/* Menú desplegable encima del planeta */}
+      <Modal show={showModal} onHide={handleCloseModal}>
+        <Modal.Header closeButton>
+          <Modal.Title>Instrucciones</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <p>En esta misión se podra visualizar un sismo en la luna o en marte, con la señal en bruto y la señal despues de pasar por nuestro modelo.</p>
+          <p>Antes de empezar usted puede elegir entre ver la mision de la luna o de marte, con el desplegable "Opciones de Misión".</p>
+          <p>Seleccione el punto en donde quiere recrear el sismo y luego ajuste los parámetros para el sismo.</p>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="primary" onClick={handleCloseModal}>
+            Entendido
+          </Button>
+        </Modal.Footer>
+      </Modal>
+
+      <div className="menu-desplegable">
+            <Dropdown drop={"end"}>
                 <Dropdown.Toggle variant="secondary" id="dropdown-basic">
                 Opciones de Misión
                 </Dropdown.Toggle>
                 <Dropdown.Menu>
-                    <Dropdown.Item href="#/action-1">Ver Misión Apollo</Dropdown.Item>
-                    <Dropdown.Item href="#/action-2">Ver Misión Luna</Dropdown.Item>
-                    <Dropdown.Item href="#/action-3">Ver Misión Marte</Dropdown.Item>
+                  <Dropdown.Item 
+                     onClick={() => setInfoRender({ planetAddress: '/images/lunar_surface.jpg', 
+                                                    colorOndas : (t => `rgba(255,100,50,1)`)
+                                                  })} 
+                    className="custom-dropdown-item-luna">
+                      Ver Misión Luna
+                  </Dropdown.Item>
+                  <Dropdown.Item 
+                    onClick={() => setInfoRender({ planetAddress: '/images/2k_mars.jpg', 
+                                                  colorOndas : (t => `rgba(50, 150, 255, 1)`)
+                                                })} 
+                    className="custom-dropdown-item-marte">
+                      Ver Misión Marte
+                  </Dropdown.Item>
                 </Dropdown.Menu>
             </Dropdown>
-            <Button className="menu-desplegable"
-                onClick={() => setOpenSelectParamters(!openSelectParamters)}
-                aria-controls="example-collapse-text"
-                aria-expanded={openSelectParamters}
-            >
-                click
-            </Button>
-            <div style={{ minHeight: '150px' }}>
-                <Collapse in={openSelectParamters} dimension="width">
-                <div id="example-collapse-text">
-                    <Card body style={{ width: '400px' }}>
-                    Anim pariatur cliche reprehenderit, enim eiusmod high life
-                    accusamus terry richardson ad squid. Nihil anim keffiyeh
-                    helvetica, craft beer labore wes anderson cred nesciunt sapiente
-                    ea proident.
-                    </Card>
-                </div>
-                </Collapse>
-            </div>
+            <br></br>
+
+            {/* Formulario dinámico para ajustar parámetros del sismo */}
+            <Collapse in={openSelectParamters}>
+              <div id="example-collapse-text">
+                <Card body style={{ width: '400px' }}>
+                  <Form onSubmit={handleFormSubmit}>
+                    <Form.Group controlId="formMagnitude">
+                      <Form.Label>Magnitud del Sismo</Form.Label>
+                      <Form.Control
+                        type="number"
+                        name="magnitude"
+                        value={formData.magnitude}
+                        onChange={handleInputChange}
+                        required
+                        min="1"
+                        max="20"
+                      />
+                    </Form.Group>
+
+                    <Form.Group controlId="formPropagationSpeed">
+                      <Form.Label>Velocidad de Propagación</Form.Label>
+                      <Form.Control
+                        type="number"
+                        name="propagationSpeed"
+                        value={formData.propagationSpeed}
+                        onChange={handleInputChange}
+                        required
+                        min="1"
+                        max="10"
+                      />
+                    </Form.Group>
+
+                    <Button variant="primary" type="submit" onClick={() => setDataEnMano(true)}>
+                      Confirmar Parámetros
+                    </Button>
+                  </Form>
+                </Card>
+              </div>
+            </Collapse>
         </div>
-    
+  
 
       {/* Contenedor del planeta y la gráfica */}
       <Row className="content">
         <Col xs={12} md={7} lg={7} xl={7} className="globo-mision1" ref={containerRef}>
           <div ref={globeEl} className="globo-container"></div>
         </Col>
-
+        
+        {dataEnMano &&
         <Col xs={12} md={5} lg={5} xl={5} className="grafica-mision1">
             <Row>
                 <Col xs={12} md={12} lg={12} xl={12}>
-                    <h2>Señal sin limpiar</h2>
+                    <h2>Pruebas</h2>
                     <SismoChart {...props} />
                 </Col>
                 <Col xs={12} md={12} lg={12} xl={12}>
@@ -119,10 +241,10 @@ function VistaMision1(props) {
                 </Col>
             </Row>
         </Col>
-        
+        }
       </Row>
     </div>
   );
 }
 
-export default VistaMision1;
+export default VistaMisionxx;

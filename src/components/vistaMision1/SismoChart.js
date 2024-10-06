@@ -5,10 +5,6 @@ import "./SismoChart.css"
 const SismoChart = ( props ) => {
   const chartRef = useRef(null);
 
-  console.log("Cisas")
-  console.log(props);
-  console.log(props.dataAddress)
-
   const [data, setData] = useState([]);
 
   useEffect(() => {
@@ -18,7 +14,6 @@ const SismoChart = ( props ) => {
         time: new Date(+d.time * 1000),  // Convertir el tiempo Unix a milisegundos
         amplitude: +d.amplitude  // Asegurarse de que la amplitud sea un número
       }));
-      console.log(parsedData)
       setData(parsedData);
     });
   }, [props.dataAddress]);
