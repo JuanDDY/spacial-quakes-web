@@ -1,11 +1,14 @@
 import React, { useEffect, useRef, useState } from 'react';
 import Globe from 'globe.gl';
 import { Card, Collapse, Button, Row, Col, Modal, Dropdown } from 'react-bootstrap';
-import SismoChart from '../../components/graficas/SismoChart.js';
+//import SismoChart from '../../components/graficas/SismoChart.js';
+
 import './vistaMision2.css';
 
 import getInSightFiles from './getInSightFiles';
 import getApolloFiles from './getApolloFiles';
+
+import SismoChart from './SismoChart.js';
 
 
 function VistaMision2(props) {
@@ -24,7 +27,43 @@ function VistaMision2(props) {
     planetAddress : '/images/lunar_surface.jpg',
     colorOndas : (t => `rgba(255,0,0,1)`)
   })
- 
+  const lista = [
+    "/data/lunar/A/Moon-APOLLO_A_0.csv",
+    "/data/lunar/A/Moon-APOLLO_A_1.csv",
+    "/data/lunar/A/Moon-APOLLO_A_2.csv",
+    "/data/lunar/A/Moon-APOLLO_A_3.csv",
+    "/data/lunar/A/Moon-APOLLO_A_4.csv",
+    "/data/lunar/A/Moon-APOLLO_A_5.csv",
+    "/data/lunar/A/Moon-APOLLO_A_6.csv",
+    "/data/lunar/A/Moon-APOLLO_A_7.csv",
+    "/data/lunar/A/Moon-APOLLO_A_8.csv",
+    "/data/lunar/A/Moon-APOLLO_A_9.csv",
+    "/data/mars/A/Mars-InSight_A_0.csv",
+    "/data/mars/A/Mars-InSight_A_1.csv",
+    "/data/mars/A/Mars-InSight_A_2.csv",
+    "/data/mars/A/Mars-InSight_A_3.csv",
+    "/data/mars/A/Mars-InSight_A_4.csv",
+    "/data/lunar/no_seismic/Moon-APOLLO_noseismic_0.csv",
+    "/data/lunar/no_seismic/Moon-APOLLO_noseismic_1.csv",
+    "/data/lunar/no_seismic/Moon-APOLLO_noseismic_2.csv",
+    "/data/lunar/no_seismic/Moon-APOLLO_noseismic_3.csv",
+    "/data/lunar/no_seismic/Moon-APOLLO_noseismic_4.csv",
+    "/data/lunar/no_seismic/Moon-APOLLO_noseismic_5.csv",
+    "/data/lunar/no_seismic/Moon-APOLLO_noseismic_6.csv",
+    "/data/lunar/no_seismic/Moon-APOLLO_noseismic_7.csv",
+    "/data/mars/no_seismic/Mars-InSight_noseismic_0.csv",
+    "/data/mars/no_seismic/Mars-InSight_noseismic_1.csv",
+    "/data/mars/no_seismic/Mars-InSight_noseismic_2.csv",
+    "/data/mars/no_seismic/Mars-InSight_noseismic_2.csv",
+    "/data/mars/no_seismic/Mars-InSight_noseismic_3.csv",
+    "/data/mars/no_seismic/Mars-InSight_noseismic_4.csv",
+    "/data/mars/no_seismic/Mars-InSight_noseismic_5.csv"
+  ]
+  
+  const [csvFileSucio, ] = useState(lista[Math.floor(Math.random() * lista.length)]);
+
+
+  
 
   useEffect(() => {
 
@@ -176,7 +215,8 @@ function VistaMision2(props) {
           <Row>
             <Col xs={12} md={12} lg={12} xl={12}>
               <div className="grafica-container">
-                <SismoChart {...props} timeOffset={timeOffset} /> {/* Pasar el offset de tiempo */}
+              <SismoChart key={csvFileSucio} dataAddress={csvFileSucio} />  {/* Pasar el offset de tiempo */}
+              {/* Pasar el offset de tiempo */}
                 <br></br>
               </div>
             </Col>
