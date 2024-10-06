@@ -1,21 +1,25 @@
 import React, { useEffect, useRef, useState} from 'react';
 import Globe from 'globe.gl';
-import * as d3 from 'd3-scale';
 import { Modal, Dropdown, Card, Collapse, Button, Row, Col, Form } from 'react-bootstrap';
 
 import SismoChart from './SismoChart.js';
 import './vistaMision1.css'; // Archivo CSS para estilos adicionales.
 
 
+import getInSightFiles from './getInSightFiles';
 
-function VistaMisionxx(props) {
+import getApolloFiles from './getApolloFiles';
+
+
+function VistaMisionxx() {
 
   const globeEl = useRef();
   const containerRef = useRef(); // Referencia al contenedor de la columna
 
   const [infoRender, setInfoRender] = useState({
     planetAddress : '/images/lunar_surface.jpg',
-    colorOndas : (t => `rgba(255,0,0,1)`)
+    colorOndas : (t => `rgba(255,0,0,1)`),
+    carpeta: "lunar"
   })
   const [coordenadas, setCoordenadas] = useState({lat : 0, long: 0, disponibles: false});
   const [openSelectParamters, setOpenSelectParamters] = useState(false);
@@ -25,7 +29,10 @@ function VistaMisionxx(props) {
   });
   const [parametersConfirmed, setParametersConfirmed] = useState(false);
   const [dataEnMano, setDataEnMano] = useState(false);
-  
+
+  const [csvFileSucio, setCsvFileSucio] = useState('');
+  const [csvFileLimpio, setCsvFileLimpio] = useState('');
+
 
   const handleCloseModal = () => setShowModal(false);
   
@@ -34,11 +41,14 @@ function VistaMisionxx(props) {
     const newSismo = {
       lat: coordenadas.lat,
       lng: coordenadas.long,
-      maxR: formData.magnitude ? Number(formData.magnitude) : 20,
-      propagationSpeed: formData.propagationSpeed ? Number(formData.propagationSpeed) : 5,
+      maxR: 20,
+      propagationSpeed: 5,
       repeatPeriod: 600
     };
+    
+    selectRandomFile();
     setDataEnMano(true);
+    console.log("Cosas")
     // Agregar nuevo sismo
     setSismos([...sismos, newSismo]);
     setParametersConfirmed(true); // Confirmar parámetros
@@ -56,12 +66,46 @@ function VistaMisionxx(props) {
   const [sismos, setSismos] = useState([]);
   
 
+  function selectRandomFile() {
+    var index = 0;
+    if(infoRender.carpeta === "lunar"){
+      const listaAleatoria  = getApolloFiles(formData.calidad);
+      const csvFileSucio = listaAleatoria.map(file => `/data/lunar/${formData.calidad}/${file}.csv`);
+      const csvFileLimpio = listaAleatoria.map(file => `/data/lunar/${formData.calidad}/filt_${file}.csv`);
+
+      // Seleccionar un archivo CSV aleatorio
+      index = Math.floor(Math.random() * csvFileSucio.length);
+      const randomFile = csvFileSucio[index];
+      setCsvFileSucio(randomFile);
+      console.log(randomFile)
+      const randomFile2 = csvFileLimpio[index];
+      setCsvFileLimpio(randomFile2);
+      console.log(randomFile2)
+    
+    } else {
+      const listaAleatoria  = getApolloFiles(formData.calidad);
+      const csvFileSucio = listaAleatoria.map(file => `/data/mars/${formData.calidad}/${file}.csv`);
+      const csvFileLimpio = listaAleatoria.map(file => `/data/mars/${formData.calidad}/filt_${file}.csv`);
+
+      // Seleccionar un archivo CSV aleatorio
+      index = Math.floor(Math.random() * csvFileSucio.length);
+      const randomFile = csvFileSucio[index];
+      setCsvFileSucio(randomFile);
+      console.log(randomFile)
+      const randomFile2 = csvFileLimpio[index];
+      setCsvFileLimpio(randomFile2);
+      console.log(randomFile2)
+    }
+  }
+ 
+
   useEffect(() => {
 
     const planet = Globe()
       .globeImageUrl(infoRender.planetAddress)
       //.bumpImageUrl('/images/lunar_bumpmap.jpg')
-      .backgroundImageUrl('//unpkg.com/three-globe/example/img/night-sky.png')
+      //.backgroundImageUrl('//unpkg.com/three-globe/example/img/night-sky.png')
+      .backgroundColor('#000000')
       .showGraticules(false)
       .showAtmosphere(false)
       
@@ -112,7 +156,8 @@ function VistaMisionxx(props) {
     // Agregar las ondas sísmicas al globo una vez confirmados los parámetros
     const planet = Globe()
       .globeImageUrl(infoRender.planetAddress)
-      .backgroundImageUrl('//unpkg.com/three-globe/example/img/night-sky.png')
+      //.backgroundImageUrl('//unpkg.com/three-globe/example/img/night-sky.png')
+      .backgroundColor('#000000')
       .ringsData(gData)
       .ringColor(() => infoRender.colorOndas)
       .ringMaxRadius('maxR')
@@ -177,14 +222,16 @@ function VistaMisionxx(props) {
                 <Dropdown.Menu>
                   <Dropdown.Item 
                      onClick={() => setInfoRender({ planetAddress: '/images/lunar_surface.jpg', 
-                                                    colorOndas : (t => `rgba(255,100,50,1)`)
+                                                    colorOndas : (t => `rgba(255,100,50,1)`),
+                                                    carpeta: "lunar"
                                                   })} 
                     className="custom-dropdown-item-luna">
                       Ver Misión Luna
                   </Dropdown.Item>
                   <Dropdown.Item 
                     onClick={() => setInfoRender({ planetAddress: '/images/2k_mars.jpg', 
-                                                  colorOndas : (t => `rgba(50, 150, 255, 1)`)
+                                                  colorOndas : (t => `rgba(50, 150, 255, 1)`),
+                                                  carpeta: "mars"
                                                 })} 
                     className="custom-dropdown-item-marte">
                       Ver Misión Marte
@@ -234,11 +281,11 @@ function VistaMisionxx(props) {
             <Row>
                 <Col xs={12} md={12} lg={12} xl={12}>
                     <h2>Pruebas</h2>
-                    <SismoChart {...props} />
+                    <SismoChart dataAddress={csvFileSucio} />
                 </Col>
                 <Col xs={12} md={12} lg={12} xl={12}>
                     <h2>Señal limpia</h2>
-                    <SismoChart {...props} />
+                    <SismoChart dataAddress={csvFileLimpio} />
                 </Col>
             </Row>
         </Col>

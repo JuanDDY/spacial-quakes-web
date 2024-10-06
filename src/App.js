@@ -18,6 +18,10 @@ import VistaMision2 from './components/vistaMision2/VistaMision2';
 
 import VistaMisionxx from './components/vistaMision1/VistaMisionxx'; 
 
+import {IntlProvider} from 'react-intl';
+
+import localeEsMessages from "./locales/es";
+import localeEnMessages from "./locales/en";
 /*
 async function loadCSV(url) {
   const response = await fetch(url); 
@@ -42,23 +46,37 @@ function App() {
   
   const [dataAddress, setDataAddres] = useState("/dataProvisional/pruebas1000.csv");
 
+  const [locale, setLocale] = useState("es-ES");
+  const [messages, setMessages] = useState(localeEsMessages);
+
+  useEffect(() => {
+    const browserLanguage = navigator.language;
+
+    if (browserLanguage.startsWith("es")) {
+      setLocale("es-ES");
+      setMessages(localeEsMessages);
+    } else {
+      setLocale("en-US");
+      setMessages(localeEnMessages);
+    }
+  }, []);
    
 
   return (
     <div className="App">
-      <NavBar></NavBar>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/home" element={<Home />} />
-          <Route path="/simulate" element={<GlobeComponent />} />
-          <Route path="/modelo" element={<Modelo dataAddress={dataAddress} />} /> 
-          <Route path="/grafica" element={<SismoChart dataAddress={dataAddress} />} />
-          <Route path="/mision1" element={<VistaMisionxx dataAddress={dataAddress}/>} />
-          <Route path="/mision2" element={<VistaMision2 dataAddress={dataAddress} />} />
-          <Route path="/descripcion" element={<Grupo_descripcion/>} />
-        </Routes>
-      </BrowserRouter>
+      <IntlProvider locale={locale} messages={messages}>
+        <NavBar></NavBar>
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/home" element={<Home />} />
+            <Route path="/modelo" element={<Modelo dataAddress={dataAddress} />} /> 
+            <Route path="/mision1" element={<VistaMisionxx dataAddress={dataAddress}/>} />
+            <Route path="/mision2" element={<VistaMision2 dataAddress={dataAddress} />} />
+            <Route path="/descripcion" element={<Grupo_descripcion/>} />
+          </Routes>
+        </BrowserRouter>
+      </IntlProvider>
     </div>
   );
 }
