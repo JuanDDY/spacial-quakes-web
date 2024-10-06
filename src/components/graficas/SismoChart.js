@@ -29,7 +29,7 @@ const SismoChart = (props) => {
 
   useEffect(() => {
     // Establecer las dimensiones y márgenes del gráfico
-    const margin = { top: 20, right: 30, bottom: 40, left: 40 };
+    const margin = { top: 20, right: 30, bottom: 50, left: 100 };
     const width = 800 - margin.left - margin.right;
     const height = 400 - margin.top - margin.bottom;
 
@@ -53,17 +53,29 @@ const SismoChart = (props) => {
     svg.append('g')
       .attr('transform', `translate(0,${height})`)  // Mover el eje X al fondo
       .call(d3.axisBottom(x))
-      .selectAll('path, line')  // Cambiar el color de los ejes a blanco
-      .attr('stroke', 'white');
+      .selectAll('text')  // Cambiar el color de los textos del eje X a blanco
+      .style('fill', 'white');
 
     svg.append('g')
+      .attr('transform', `translate(0,0)`) 
       .call(d3.axisLeft(y))
-      .selectAll('path, line')  // Cambiar el color del eje Y a blanco
-      .attr('stroke', 'white');
+      .selectAll('text')  // Cambiar el color de los textos del eje Y a blanco
+      .style('fill', 'white');
 
-    // Texto de los ejes
-    svg.selectAll('text')
-      .attr('fill', 'white');
+    // Etiquetas de los ejes
+    svg.append('text')  // Etiqueta del eje X
+      .attr('transform', `translate(${width / 2}, ${height + margin.bottom - 10})`)
+      .style('text-anchor', 'middle')
+      .attr('fill', 'white')
+      .text('Tiempo (segundos)');
+
+    svg.append('text')  // Etiqueta del eje Y
+      .attr('transform', 'rotate(-90)')
+      .attr('y', 0 - margin.left + 40)  // Mover el label del eje Y más a la izquierda
+      .attr('x', 0 - (height / 2))
+      .style('text-anchor', 'middle')
+      .attr('fill', 'white')
+      .text('Velocidad (m/s)');
 
     // Línea del gráfico
     const line = d3.line()

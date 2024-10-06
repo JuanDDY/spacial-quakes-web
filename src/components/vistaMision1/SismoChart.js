@@ -10,12 +10,12 @@ const SismoChart = ( props ) => {
   useEffect(() => {
     
     d3.csv(props.dataAddress).then(data => {
-      var i =1;
+      var i = 1;
       const parsedData = data.map(d => {
-
         const time = +d.time;  // Convertir el tiempo a número
         const dataValue = +d.data;  // Convertir la amplitud a número
-        if(i===1){console.log(d.time); i++}
+        if(i === 1) { console.log(d.time); i++; }
+        
         // Validar que ambos sean números y no NaN
         if (isNaN(time) || isNaN(dataValue)) {
           console.error(`Dato inválido encontrado en el archivo CSV: time = ${d.time}, data = ${d.data}`);
@@ -33,7 +33,7 @@ const SismoChart = ( props ) => {
     if (data.length === 0) return; // Esperar hasta que haya datos
 
     // Establecer las dimensiones y márgenes del gráfico
-    const margin = { top: 20, right: 30, bottom: 40, left: 40 };
+    const margin = { top: 20, right: 30, bottom: 50, left: 100 }; // Aumentar el margen izquierdo
     const width = 800 - margin.left - margin.right;
     const height = 400 - margin.top - margin.bottom;
 
@@ -57,18 +57,29 @@ const SismoChart = ( props ) => {
     svg.append('g')
       .attr('transform', `translate(0,${height})`)  // Mover el eje X al fondo
       .call(d3.axisBottom(x))
-      .selectAll('path, line')  // Cambiar el color de los ejes a blanco
-      .attr('stroke', 'white'); 
+      .selectAll('text')  // Cambiar el color de los textos del eje X a blanco
+      .style('fill', 'white');
 
     svg.append('g')
       .attr('transform', `translate(0,0)`) 
       .call(d3.axisLeft(y))
-      .selectAll('path, line')  // Cambiar el color del eje Y a blanco
-      .attr('stroke', 'white');
+      .selectAll('text')  // Cambiar el color de los textos del eje Y a blanco
+      .style('fill', 'white');
 
-    // Texto de los ejes
-    svg.selectAll('text')
-      .attr('fill', 'white');
+    // Etiquetas de los ejes
+    svg.append('text')  // Etiqueta del eje X
+      .attr('transform', `translate(${width / 2}, ${height + margin.bottom - 10})`)
+      .style('text-anchor', 'middle')
+      .attr('fill', 'white')
+      .text('Tiempo (segundos)');
+
+    svg.append('text')  // Etiqueta del eje Y
+      .attr('transform', 'rotate(-90)')
+      .attr('y', 0 - margin.left + 40)  // Mover el label del eje Y más a la izquierda
+      .attr('x', 0 - (height / 2))
+      .style('text-anchor', 'middle')
+      .attr('fill', 'white')
+      .text('Velocidad (m/s)');
 
     // Línea del gráfico
     const line = d3.line()

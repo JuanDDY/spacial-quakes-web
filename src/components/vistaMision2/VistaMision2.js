@@ -1,9 +1,12 @@
 import React, { useEffect, useRef, useState } from 'react';
 import Globe from 'globe.gl';
-import * as d3 from 'd3-scale';
 import { Card, Collapse, Button, Row, Col, Modal, Dropdown } from 'react-bootstrap';
 import SismoChart from '../../components/graficas/SismoChart.js';
 import './vistaMision2.css';
+
+import getInSightFiles from './getInSightFiles';
+import getApolloFiles from './getApolloFiles';
+
 
 function VistaMision2(props) {
   const globeEl = useRef();
@@ -21,7 +24,7 @@ function VistaMision2(props) {
     planetAddress : '/images/lunar_surface.jpg',
     colorOndas : (t => `rgba(255,0,0,1)`)
   })
-
+ 
 
   useEffect(() => {
 
@@ -122,14 +125,13 @@ function VistaMision2(props) {
       <h1 style={{ 
         color: 'white',
         textAlign: 'center',
-        marginTop: '20px', 
+        marginTop: '5px', 
         width: '1050px', 
         height: '50px',
         fontSize: '60px',
         marginLeft: '100px',
         fontWeight: 600,
-        position: 'absolute',
-        zIndex: 10
+        marginBottom: "20px"
        }}>Identifica qué es ruido y qué es sismo</h1>
 
       <div className="menu-desplegable">
@@ -166,15 +168,16 @@ function VistaMision2(props) {
       </div>
 
       <Row className="content">
-        <Col xs={12} md={7} lg={7} xl={7} className="globo-mision1" ref={containerRef}>
+        <Col xs={12} md={6} lg={6} xl={6} className="globo-mision1" ref={containerRef}>
           <div ref={globeEl} className="globo-container"></div>
         </Col>
 
-        <Col xs={12} md={5} lg={5} xl={5} className="grafica-mision1">
+        <Col xs={12} md={6} lg={6} xl={6} className="grafica-mision1">
           <Row>
             <Col xs={12} md={12} lg={12} xl={12}>
               <div className="grafica-container">
                 <SismoChart {...props} timeOffset={timeOffset} /> {/* Pasar el offset de tiempo */}
+                <br></br>
               </div>
             </Col>
             <Col xs={12} md={12} lg={12} xl={12} style={{ 

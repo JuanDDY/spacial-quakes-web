@@ -68,7 +68,7 @@ function VistaMisionxx() {
 
   function selectRandomFile() {
     var index = 0;
-    if(infoRender.carpeta === "lunar"){
+    if(infoRender.carpeta == "lunar"){
       const listaAleatoria  = getApolloFiles(formData.calidad);
       const csvFileSucio = listaAleatoria.map(file => `/data/lunar/${formData.calidad}/${file}.csv`);
       const csvFileLimpio = listaAleatoria.map(file => `/data/lunar/${formData.calidad}/filt_${file}.csv`);
@@ -77,13 +77,13 @@ function VistaMisionxx() {
       index = Math.floor(Math.random() * csvFileSucio.length);
       const randomFile = csvFileSucio[index];
       setCsvFileSucio(randomFile);
-      console.log(randomFile)
+      console.log("Señal sucia: " + randomFile)
       const randomFile2 = csvFileLimpio[index];
       setCsvFileLimpio(randomFile2);
-      console.log(randomFile2)
+      console.log("Señal limpia: " + randomFile2)
     
     } else {
-      const listaAleatoria  = getApolloFiles(formData.calidad);
+      const listaAleatoria  = getInSightFiles(formData.calidad);
       const csvFileSucio = listaAleatoria.map(file => `/data/mars/${formData.calidad}/${file}.csv`);
       const csvFileLimpio = listaAleatoria.map(file => `/data/mars/${formData.calidad}/filt_${file}.csv`);
 
@@ -91,10 +91,10 @@ function VistaMisionxx() {
       index = Math.floor(Math.random() * csvFileSucio.length);
       const randomFile = csvFileSucio[index];
       setCsvFileSucio(randomFile);
-      console.log(randomFile)
+      console.log("Señal sucia: " + randomFile)
       const randomFile2 = csvFileLimpio[index];
       setCsvFileLimpio(randomFile2);
-      console.log(randomFile2)
+      console.log("Señal limpia: " + randomFile2)
     }
   }
  
@@ -214,6 +214,59 @@ function VistaMisionxx() {
         </Modal.Footer>
       </Modal>
 
+      <div className="menu-desplegable-planeta">
+          <Dropdown drop={"end"}>
+              <Dropdown.Toggle variant="secondary" id="dropdown-basic">
+              Opciones de Misión
+              </Dropdown.Toggle>
+              <Dropdown.Menu>
+                <Dropdown.Item 
+                    onClick={() => setInfoRender({ planetAddress: '/images/lunar_surface.jpg', 
+                                                  colorOndas : (t => `rgba(255,100,50,1)`)
+                                                })} 
+                  className="custom-dropdown-item-luna">
+                    Ver Misión Luna
+                </Dropdown.Item>
+                <Dropdown.Item 
+                  onClick={() => setInfoRender({ planetAddress: '/images/2k_mars.jpg', 
+                                                colorOndas : (t => `rgba(50, 150, 255, 1)`)
+                                              })} 
+                  className="custom-dropdown-item-marte">
+                    Ver Misión Marte
+                </Dropdown.Item>
+              </Dropdown.Menu>
+          </Dropdown>
+          <br></br>
+
+          {/* Formulario dinámico para ajustar parámetros del sismo */}
+          <Collapse in={openSelectParamters}>
+            <div id="example-collapse-text">
+              <Card body style={{ width: '400px' }}>
+                <Form onSubmit={handleFormSubmit}>
+                  <Form.Group controlId="formCalidad">
+                    <Form.Label>Calidad del Sismo</Form.Label>
+                    <Form.Control
+                      as="select"
+                      name="calidad"
+                      value={formData.calidad}
+                      onChange={handleInputChange}
+                      required
+                    >
+                      <option value="A">A</option>
+                      <option value="B">B</option>
+                      <option value="C">C</option>
+                    </Form.Control>
+                  </Form.Group>
+
+                  <Button variant="primary" type="submit">
+                    Confirmar Parámetros
+                  </Button>
+                </Form>
+              </Card>
+            </div>
+          </Collapse>
+      </div>
+
       <div className="menu-desplegable">
             <Dropdown drop={"end"}>
                 <Dropdown.Toggle variant="secondary" id="dropdown-basic">
@@ -272,24 +325,24 @@ function VistaMisionxx() {
 
       {/* Contenedor del planeta y la gráfica */}
       <Row className="content">
-        <Col xs={12} md={7} lg={7} xl={7} className="globo-mision1" ref={containerRef}>
+        <Col xs={12} md={6} lg={6} xl={6} className="globo-mision1" ref={containerRef}>
           <div ref={globeEl} className="globo-container"></div>
         </Col>
-        
-        {dataEnMano &&
-        <Col xs={12} md={5} lg={5} xl={5} className="grafica-mision1">
+
+        {dataEnMano && (
+          <Col xs={12} md={6} lg={6} xl={6} className="grafica-mision1" style={{marginLeft:"40"}}>
             <Row>
-                <Col xs={12} md={12} lg={12} xl={12}>
-                    <h2>Pruebas</h2>
-                    <SismoChart dataAddress={csvFileSucio} />
-                </Col>
-                <Col xs={12} md={12} lg={12} xl={12}>
-                    <h2>Señal limpia</h2>
-                    <SismoChart dataAddress={csvFileLimpio} />
-                </Col>
+              <Col xs={12} md={12} lg={12} xl={12}>
+                <h2>Señal cruda</h2>
+                <SismoChart key={csvFileSucio} dataAddress={csvFileSucio} />
+              </Col>
+              <Col xs={12} md={12} lg={12} xl={12}>
+                <h2>Señal limpia</h2>
+                <SismoChart key={csvFileLimpio} dataAddress={csvFileLimpio} />
+              </Col>
             </Row>
-        </Col>
-        }
+          </Col>
+        )}
       </Row>
     </div>
   );
