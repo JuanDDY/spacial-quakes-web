@@ -13,6 +13,8 @@ function NavBar() {
           <Navbar.Brand href="/modelo">Modelo</Navbar.Brand>
           <Navbar.Brand href="/mision1">Mision1</Navbar.Brand>
           <Navbar.Brand href="/mision2">Mision2</Navbar.Brand>
+          <Navbar.Brand href="/descripcion">Nosotros</Navbar.Brand>
+
 
         </Container>
       </Navbar>

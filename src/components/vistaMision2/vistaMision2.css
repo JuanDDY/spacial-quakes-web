@@ -3,15 +3,18 @@
   /* Menú desplegable sobre el fondo */
   .menu-desplegable {
     position: absolute;
-    top: 20px;
-    left: 20px;
+    top: -50px;
+    right: -1830px;
     z-index: 10;
+    
   }
   
 
   
   .vista-mision-container {
     position: relative;
+    background-color: #ffffff; 
+    min-height: 100vh; 
     width: 100%;
     height: 100vh; /* Asegurarse de ocupar toda la altura */
     overflow: hidden;

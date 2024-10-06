@@ -1,28 +1,28 @@
 import React, { useEffect, useRef, useState } from 'react';
 import * as d3 from 'd3';
-import "./SismoChart.css"
+import "./SismoChart.css";
 
-const SismoChart = ( props ) => {
+const SismoChart = (props) => {
   const chartRef = useRef(null);
-
-  console.log("Cisas")
-  console.log(props);
-  console.log(props.dataAddress)
-
   const [data, setData] = useState([]);
+  const [displayData, setDisplayData] = useState([]);
 
   useEffect(() => {
-    // D3 puede manejar el formato ISO 8601 directamente
+    // Cargar los datos de CSV
     d3.csv(props.dataAddress).then(data => {
       const parsedData = data.map(d => ({
         time: new Date(+d.time * 1000),  // Convertir el tiempo Unix a milisegundos
         amplitude: +d.amplitude  // Asegurarse de que la amplitud sea un número
       }));
-      console.log(parsedData)
       setData(parsedData);
     });
   }, [props.dataAddress]);
 
+  useEffect(() => {
+    // Actualizar los datos que se muestran según el timeOffset
+    const offsetData = data.slice(props.timeOffset, props.timeOffset + 1000); // Muestra un rango de 1000 puntos
+    setDisplayData(offsetData);
+  }, [data, props.timeOffset]);
 
   useEffect(() => {
     // Establecer las dimensiones y márgenes del gráfico
@@ -39,27 +39,26 @@ const SismoChart = ( props ) => {
 
     // Escaladores
     const x = d3.scaleTime()
-      .domain(d3.extent(data, d => new Date(d.time)))  // Ajustar los tiempos
+      .domain(d3.extent(displayData, d => new Date(d.time)))  // Ajustar los tiempos
       .range([0, width]);
 
     const y = d3.scaleLinear()
-      .domain([d3.min(data, d => d.amplitude), d3.max(data, d => d.amplitude)])  // Amplitud
+      .domain([d3.min(displayData, d => d.amplitude), d3.max(displayData, d => d.amplitude)])  // Amplitud
       .range([height, 0]);
 
     // Ejes
     svg.append('g')
-      .attr('transform', `translate(0,${height/2})`)  // Mover el eje X al fondo
+      .attr('transform', `translate(0,${height})`)  // Mover el eje X al fondo
       .call(d3.axisBottom(x))
       .selectAll('path, line')  // Cambiar el color de los ejes a blanco
-      .attr('stroke', 'white'); 
+      .attr('stroke', 'white');
 
     svg.append('g')
-      .attr('transform', `translate(0,0)`) 
       .call(d3.axisLeft(y))
       .selectAll('path, line')  // Cambiar el color del eje Y a blanco
       .attr('stroke', 'white');
 
-    //Texto ejes
+    // Texto de los ejes
     svg.selectAll('text')
       .attr('fill', 'white');
 
@@ -69,13 +68,17 @@ const SismoChart = ( props ) => {
       .y(d => y(d.amplitude));
 
     svg.append('path')
-      .datum(data)
+      .datum(displayData)
       .attr('fill', 'none')
       .attr('stroke', 'steelblue')
       .attr('stroke-width', 1.5)
       .attr('d', line);
 
-  }, [data]);
+    // Limpiar el SVG antes de volver a dibujar
+    return () => {
+      svg.selectAll('*').remove(); // Limpiar el SVG para evitar la superposición
+    };
+  }, [displayData]); // Renderizar nuevamente cuando cambien los datos que se muestran
 
   return (
     <svg ref={chartRef}></svg>

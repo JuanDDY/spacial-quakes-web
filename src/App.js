@@ -11,6 +11,7 @@ import Modelo from './components/modelo/modelo';
 import SismoChart from './components/graficas/SismoChart'; 
 import Graffic2 from './components/graficas/Graffic2'; 
 
+import Grupo_descripcion from './components/Grupo_descripcion';
 
 import VistaMision1 from './components/vistaMision1/VistaMision1'; 
 import VistaMision2 from './components/vistaMision2/VistaMision2'; 
@@ -54,6 +55,7 @@ function App() {
           <Route path="/grafica" element={<SismoChart dataAddress={dataAddress} />} />
           <Route path="/mision1" element={<VistaMision1 dataAddress={dataAddress}/>} />
           <Route path="/mision2" element={<VistaMision2 dataAddress={dataAddress} />} />
+          <Route path="/descripcion" element={<Grupo_descripcion/>} />
         </Routes>
       </BrowserRouter>
     </div>
