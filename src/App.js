@@ -10,7 +10,7 @@ import Home from "./components/Home";
 import Modelo from "./components/modelo/modelo";
 import VistaMision1 from "./components/vistaMision1/VistaMision1";
 import VistaMision2 from "./components/vistaMision2/VistaMision2";
-import Grupo_descripcion from "./components/Grupo_descripcion";
+import GrupoDescripcion from "./components/Grupo_descripcion";
 
 import { IntlProvider } from "react-intl";
 import localeEsMessages from "./locales/es";
@@ -48,7 +48,7 @@ function App() {
             <Route path="/modelo" element={<Modelo dataAddress={dataAddress} />} />
             <Route path="/mision1" element={<VistaMision1 dataAddress={dataAddress} />} />
             <Route path="/mision2" element={<VistaMision2 dataAddress={dataAddress} />} />
-            <Route path="/descripcion" element={<Grupo_descripcion />} />
+            <Route path="/descripcion" element={<GrupoDescripcion />} />
             <Route path="*" element={<Home />} /> {/* 404 -> Home */}
           </Routes>
         </BrowserRouter>

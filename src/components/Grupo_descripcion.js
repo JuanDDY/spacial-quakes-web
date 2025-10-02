@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Grupo_descripcion = () => {
+const GrupoDescripcion = () => {
     const groupInfo = {
         name: "SEISMinds",
         description: "Un grupo interdisciplinario dedicado a la exploración de fenómenos geológicos y sismológicos en planetas y satélites. Trabajamos en proyectos innovadores que buscan entender mejor la actividad sísmica en Marte y la Luna.",
@@ -97,4 +97,4 @@ const Grupo_descripcion = () => {
     );
 }
 
-export default Grupo_descripcion;
+export default GrupoDescripcion;
