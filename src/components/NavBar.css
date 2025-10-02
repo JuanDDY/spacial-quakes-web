@@ -1,0 +1,56 @@
+/* Fondo negro elegante + sutil elevación */
+.app-navbar {
+    background-color: #000 !important;      /* black */
+    box-shadow: 0 6px 18px rgba(0,0,0,.5), inset 0 -1px 0 rgba(255,255,255,.06);
+    border-bottom: 1px solid rgba(255,255,255,.06);
+  }
+  
+  /* Marca con toque de identidad */
+  .brand {
+    display: inline-flex;
+    align-items: center;
+    gap: .5rem;
+    font-weight: 800;
+    letter-spacing: .3px;
+  }
+  .brand-text { font-size: 1.1rem; }
+  .accent {
+    background: linear-gradient(90deg, #60a5fa, #a78bfa);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  
+  /* Links */
+  .app-navbar .nav-link {
+    color: rgba(255,255,255,.85) !important;
+    transition: color .2s ease, transform .15s ease, text-shadow .2s ease;
+    border-bottom: 2px solid transparent;
+    border-radius: 0;
+    font-weight: 500;
+  }
+  .app-navbar .nav-link:hover {
+    color: #fff !important;
+    text-shadow: 0 0 8px rgba(96,165,250,.35);
+    transform: translateY(-1px);
+  }
+  .app-navbar .nav-link.active {
+    color: #fff !important;
+    border-bottom-color: #60a5fa;
+    text-shadow: 0 0 10px rgba(96,165,250,.45);
+  }
+  
+  /* Botón CTA */
+  .cta-btn {
+    border-radius: 9999px;
+    font-weight: 700;
+    padding: .45rem 1rem;
+    line-height: 1.1;
+    transition: transform .15s ease, box-shadow .2s ease, background-color .2s ease;
+  }
+  .cta-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 8px 20px rgba(96,165,250,.25);
+    background-color: rgba(255,255,255,.08);
+  }
+  

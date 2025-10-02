@@ -4,7 +4,7 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    height: 100vh; 
+    height: calc(100vh - 56px); /* Altura menos el navbar fijo */
     background: linear-gradient(to bottom, #000407, #042431); 
     transition: background 0.3s ease, transform 1s ease;
     text-align: center;

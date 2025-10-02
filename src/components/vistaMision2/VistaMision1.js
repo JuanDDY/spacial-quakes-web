@@ -11,7 +11,7 @@ import getInSightFiles from './getInSightFiles';
 import getApolloFiles from './getApolloFiles';
 
 
-function VistaMisionxx() {
+function VistaMision1() {
 
   const globeEl = useRef();
   const containerRef = useRef(); // Referencia al contenedor de la columna
@@ -68,7 +68,7 @@ function VistaMisionxx() {
 
   function selectRandomFile() {
     var index = 0;
-    if(infoRender.carpeta == "lunar"){
+    if(infoRender.carpeta === "lunar"){
       const listaAleatoria  = getApolloFiles(formData.calidad);
       const csvFileSucio = listaAleatoria.map(file => `/data/lunar/${formData.calidad}/${file}.csv`);
       const csvFileLimpio = listaAleatoria.map(file => `/data/lunar/${formData.calidad}/filt_${file}.csv`);
@@ -214,113 +214,75 @@ function VistaMisionxx() {
         </Modal.Footer>
       </Modal>
 
-      <div className="menu-desplegable-planeta">
-          <Dropdown drop={"end"}>
-              <Dropdown.Toggle variant="secondary" id="dropdown-basic">
-              Opciones de Misión
-              </Dropdown.Toggle>
-              <Dropdown.Menu>
-                <Dropdown.Item 
-                    onClick={() => setInfoRender({ planetAddress: '/images/lunar_surface.jpg', 
-                                                  colorOndas : (t => `rgba(255,100,50,1)`)
-                                                })} 
-                  className="custom-dropdown-item-luna">
-                    Ver Misión Luna
-                </Dropdown.Item>
-                <Dropdown.Item 
-                  onClick={() => setInfoRender({ planetAddress: '/images/2k_mars.jpg', 
-                                                colorOndas : (t => `rgba(50, 150, 255, 1)`)
-                                              })} 
-                  className="custom-dropdown-item-marte">
-                    Ver Misión Marte
-                </Dropdown.Item>
-              </Dropdown.Menu>
-          </Dropdown>
-          <br></br>
+      <div
+        className="menu-desplegable-planeta"
+        style={{
+          position: 'fixed',
+          top: '70px',           // padding pequeño desde el borde superior
+          left: '10px',          // padding pequeño desde el borde izquierdo
+          zIndex: 1100           // por encima del globo y del contenido
+        }}
+      >
+        <Dropdown drop="end">
+          <Dropdown.Toggle variant="secondary" id="dropdown-basic">
+            Opciones de Misión
+          </Dropdown.Toggle>
+          <Dropdown.Menu>
+            <Dropdown.Item
+              onClick={() =>
+                setInfoRender({
+                  planetAddress: '/images/lunar_surface.jpg',
+                  colorOndas: (t) => `rgba(255,100,50,1)`,
+                  carpeta: 'lunar'
+                })
+              }
+              className="custom-dropdown-item-luna"
+            >
+              Ver Misión Luna
+            </Dropdown.Item>
+            <Dropdown.Item
+              onClick={() =>
+                setInfoRender({
+                  planetAddress: '/images/2k_mars.jpg',
+                  colorOndas: (t) => `rgba(50, 150, 255, 1)`,
+                  carpeta: 'mars'
+                })
+              }
+              className="custom-dropdown-item-marte"
+            >
+              Ver Misión Marte
+            </Dropdown.Item>
+          </Dropdown.Menu>
+        </Dropdown>
 
-          {/* Formulario dinámico para ajustar parámetros del sismo */}
-          <Collapse in={openSelectParamters}>
-            <div id="example-collapse-text">
-              <Card body style={{ width: '400px' }}>
-                <Form onSubmit={handleFormSubmit}>
-                  <Form.Group controlId="formCalidad">
-                    <Form.Label>Calidad del Sismo</Form.Label>
-                    <Form.Control
-                      as="select"
-                      name="calidad"
-                      value={formData.calidad}
-                      onChange={handleInputChange}
-                      required
-                    >
-                      <option value="A">A</option>
-                      <option value="B">B</option>
-                      <option value="C">C</option>
-                    </Form.Control>
-                  </Form.Group>
+        {/* Collapse con parámetros justo debajo del menú */}
+        <Collapse in={openSelectParamters}>
+          <div id="example-collapse-text" style={{ marginTop: 8 }}>
+            <Card body style={{ width: 360 }}>
+              <Form onSubmit={handleFormSubmit}>
+                <Form.Group controlId="formCalidad">
+                  <Form.Label>Calidad del Sismo</Form.Label>
+                  <Form.Control
+                    as="select"
+                    name="calidad"
+                    value={formData.calidad}
+                    onChange={handleInputChange}
+                    required
+                  >
+                    <option value="A">A</option>
+                    <option value="B">B</option>
+                    <option value="C">C</option>
+                  </Form.Control>
+                </Form.Group>
 
-                  <Button variant="primary" type="submit">
-                    Confirmar Parámetros
-                  </Button>
-                </Form>
-              </Card>
-            </div>
-          </Collapse>
+                <Button variant="primary" type="submit" style={{ marginTop: 12 }}>
+                  Confirmar Parámetros
+                </Button>
+              </Form>
+            </Card>
+          </div>
+        </Collapse>
       </div>
-
-      <div className="menu-desplegable">
-            <Dropdown drop={"end"}>
-                <Dropdown.Toggle variant="secondary" id="dropdown-basic">
-                Opciones de Misión
-                </Dropdown.Toggle>
-                <Dropdown.Menu>
-                  <Dropdown.Item 
-                     onClick={() => setInfoRender({ planetAddress: '/images/lunar_surface.jpg', 
-                                                    colorOndas : (t => `rgba(255,100,50,1)`),
-                                                    carpeta: "lunar"
-                                                  })} 
-                    className="custom-dropdown-item-luna">
-                      Ver Misión Luna
-                  </Dropdown.Item>
-                  <Dropdown.Item 
-                    onClick={() => setInfoRender({ planetAddress: '/images/2k_mars.jpg', 
-                                                  colorOndas : (t => `rgba(50, 150, 255, 1)`),
-                                                  carpeta: "mars"
-                                                })} 
-                    className="custom-dropdown-item-marte">
-                      Ver Misión Marte
-                  </Dropdown.Item>
-                </Dropdown.Menu>
-            </Dropdown>
-            <br></br>
-
-            {/* Formulario dinámico para ajustar parámetros del sismo */}
-            <Collapse in={openSelectParamters}>
-              <div id="example-collapse-text">
-                <Card body style={{ width: '400px' }}>
-                  <Form onSubmit={handleFormSubmit}>
-                    <Form.Group controlId="formCalidad">
-                      <Form.Label>Calidad del Sismo</Form.Label>
-                      <Form.Control
-                        as="select"
-                        name="calidad"
-                        value={formData.calidad}
-                        onChange={handleInputChange}
-                        required
-                      >
-                        <option value="A">A</option>
-                        <option value="B">B</option>
-                        <option value="C">C</option>
-                      </Form.Control>
-                    </Form.Group>
-
-                    <Button variant="primary" type="submit">
-                      Confirmar Parámetros
-                    </Button>
-                  </Form>
-                </Card>
-              </div>
-            </Collapse>
-        </div>
   
 
       {/* Contenedor del planeta y la gráfica */}
@@ -330,17 +292,16 @@ function VistaMisionxx() {
         </Col>
 
         {dataEnMano && (
-          <Col xs={12} md={6} lg={6} xl={6} className="grafica-mision1" style={{marginLeft:"40"}}>
-            <Row>
-              <Col xs={12} md={12} lg={12} xl={12}>
-                <h2>Señal cruda</h2>
-                <SismoChart key={csvFileSucio} dataAddress={csvFileSucio} />
-              </Col>
-              <Col xs={12} md={12} lg={12} xl={12}>
-                <h2>Señal limpia</h2>
-                <SismoChart key={csvFileLimpio} dataAddress={csvFileLimpio} />
-              </Col>
-            </Row>
+          <Col xs={12} md={6} lg={6} xl={6} className="grafica-mision1">
+            <div style={{ marginBottom: '15px' }}>
+              <h2 style={{ fontSize: '18px', marginBottom: '10px', color: 'white' }}>Señal cruda</h2>
+              <SismoChart key={csvFileSucio} dataAddress={csvFileSucio} />
+            </div>
+            <br></br>
+            <div>
+              <h2 style={{ fontSize: '18px', marginBottom: '10px', color: 'white' }}>Señal limpia</h2>
+              <SismoChart key={csvFileLimpio} dataAddress={csvFileLimpio} />
+            </div>
           </Col>
         )}
       </Row>
@@ -348,5 +309,4 @@ function VistaMisionxx() {
   );
 }
 
-
-export default VistaMisionxx;
+export default VistaMision1;

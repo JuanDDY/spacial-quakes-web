@@ -24,7 +24,7 @@ const Grupo_descripcion = () => {
             backgroundSize: 'cover', // Asegura que la imagen cubra todo el fondo
             backgroundPosition: 'center', // Centra la imagen
             backgroundRepeat: 'no-repeat', // Evita que la imagen se repita
-            minHeight: '100vh', // Para que cubra toda la pantalla
+            minHeight: 'calc(100vh - 56px)', // Altura menos el navbar fijo
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'center'

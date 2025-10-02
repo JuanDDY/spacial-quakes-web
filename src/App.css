@@ -1,5 +1,26 @@
+/* Estilos para prevenir overflow horizontal en componentes Bootstrap */
+.navbar {
+  max-width: 100vw !important;
+  overflow-x: hidden;
+  position: fixed !important;  /* Hace el navbar fijo */
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  z-index: 1030 !important;  /* Asegura que esté por encima del contenido */
+}
+
+.navbar .container {
+  max-width: 100% !important;
+  overflow-x: hidden;
+}
+
+/* Ajusta el contenido principal para que no se oculte detrás del navbar */
 .App {
   text-align: center;
+  width: 100%;
+  overflow-x: hidden;   /* Previene scroll horizontal en el contenedor principal */
+  max-width: 100vw;     /* Asegura que no exceda el ancho del viewport */
+  padding-top: 56px;    /* Espacio para el navbar fijo (altura típica del navbar) */
 }
 
 .App-logo {

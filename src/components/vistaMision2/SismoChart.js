@@ -32,10 +32,10 @@ const SismoChart = ( props ) => {
   useEffect(() => {
     if (data.length === 0) return; // Esperar hasta que haya datos
 
-    // Establecer las dimensiones y márgenes del gráfico
-    const margin = { top: 20, right: 30, bottom: 50, left: 100 }; // Aumentar el margen izquierdo
-    const width = 800 - margin.left - margin.right;
-    const height = 400 - margin.top - margin.bottom;
+    // Establecer las dimensiones y márgenes del gráfico (más pequeñas para encajar)
+    const margin = { top: 15, right: 20, bottom: 35, left: 60 }; // Márgenes más pequeños
+    const width = 600 - margin.left - margin.right;  // Ancho reducido
+    const height = 250 - margin.top - margin.bottom; // Altura reducida
 
     // Seleccionar el contenedor y limpiar gráficos previos
     const svg = d3.select(chartRef.current)

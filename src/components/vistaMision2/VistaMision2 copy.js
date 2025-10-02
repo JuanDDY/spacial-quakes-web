@@ -1,16 +1,18 @@
 import React, { useEffect, useRef, useState, useCallback } from 'react';
 import Globe from 'globe.gl';
-import { Button, Row, Col, Modal, Dropdown } from 'react-bootstrap';
+import { Card, Collapse, Button, Row, Col, Modal, Dropdown, Form } from 'react-bootstrap';
+//import SismoChart from '../../components/graficas/SismoChart.js';
 
 import './vistaMision2.css';
 
 import SismoChart from './SismoChart.js';
 
-function VistaMision2(props) {
 
+function VistaMision2(props) {
   const globeEl = useRef();
   const containerRef = useRef();
 
+  const [open, setOpen] = useState(false);
   const [score, setScore] = useState(10);
   const [currentQuestion, setCurrentQuestion] = useState(1);
   const [correctAnswersCount, setCorrectAnswersCount] = useState(0); // Contador de respuestas correctas
@@ -18,13 +20,11 @@ function VistaMision2(props) {
   const [showModal, setShowModal] = useState(false);
   
   const [csvFileSucio, setCsvFileSucio] = useState('');
-  const [currentSignalType, setCurrentSignalType] = useState('sismo'); // Tipo de señal actual (por ahora solo sismo)
+  const [currentSignalType] = useState('sismo'); // Tipo de señal actual (por ahora solo sismo)
 
-  const [formData, ] = useState({
+  const [formData, setFormData] = useState({
     calidad: 'A' // Valor por defecto para la calidad
   });
-
-  const [qualities, ] = useState(['A', 'B', 'C'])
 
   const [infoRender, setInfoRender] = useState({
     planetAddress : '/images/lunar_surface.jpg',
@@ -32,63 +32,41 @@ function VistaMision2(props) {
   })
 
 
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: value
+    });
+  };
 
+  const handleFormSubmit = (e) => {
+    e.preventDefault();
+    selectRandomFile();
+  };
 
-  const getTipeByIndex = useCallback((index) => {
-    if(index === 0){
-      return 'sismo';
-    } else {
-      return 'ruido';
-    }
-  }, []);
-
-
-  // Seleccionar un archivo CSV aleatorio
   const selectRandomFile = useCallback(() => {
-
-    var indexType = 0;
-    var numFile = 0;
-    var pathFile = '';
-    var qualitySeismic = 0;
-
+    var index = 0;
     if(infoRender.carpeta === "lunar"){
+      const listaAleatoria  = getApolloFiles(formData.calidad);
+      const csvFileSucio = listaAleatoria.map(file => `/data/lunar/${formData.calidad}/${file}.csv`);
 
-      indexType = Math.floor(Math.random() * 2);
-      setCurrentSignalType(getTipeByIndex(indexType))
-      console.log("Tipo de señal: " + indexType)
-      console.log("Tipo de señal: " + getTipeByIndex(indexType))
-      if(indexType === 0){
-        qualitySeismic = Math.floor(Math.random() * 3)
-        numFile = Math.floor(Math.random() * 10)
-        pathFile = `/data/lunar/${qualities[qualitySeismic]}/Moon-APOLLO_${qualities[qualitySeismic]}_${numFile}.csv`
-        setCsvFileSucio(pathFile);
-      } else {
-        numFile = Math.floor(Math.random() * 10)
-        pathFile = `/data/lunar/no_seismic/Moon-APOLLO_noseismic_${numFile}.csv`
-      }
+      index = Math.floor(Math.random() * csvFileSucio.length);
+      const randomFile = csvFileSucio[index];
+      setCsvFileSucio(randomFile);
+      console.log("Señal sucia: " + randomFile)
     
     } else {
-      
-      indexType = Math.floor(Math.random() * 2);
-      setCurrentSignalType(getTipeByIndex(indexType))
-      console.log("Tipo de señal: " + indexType)
-      console.log("Tipo de señal: " + getTipeByIndex(indexType))
-      if(indexType === 0){
-        qualitySeismic = Math.floor(Math.random() * 3)
-        if(qualitySeismic === 0){
-          numFile = Math.floor(Math.random() * 5)
-        } else {
-          numFile = Math.floor(Math.random() * 10)
-        }
-        pathFile = `/data/mars/${qualities[qualitySeismic]}/Mars-InSight_${qualities[qualitySeismic]}_${numFile}.csv`
-        setCsvFileSucio(pathFile);
-      } else {
-        numFile = Math.floor(Math.random() * 10)
-        pathFile = `/data/mars/no_seismic/Mars-InSight_noseismic_${numFile}.csv`
-      }
+      const listaAleatoria  = getInSightFiles(formData.calidad);
+      const csvFileSucio = listaAleatoria.map(file => `/data/mars/${formData.calidad}/${file}.csv`);
+
+      // Seleccionar un archivo CSV aleatorio
+      index = Math.floor(Math.random() * csvFileSucio.length);
+      const randomFile = csvFileSucio[index];
+      setCsvFileSucio(randomFile);
+      console.log("Señal sucia: " + randomFile)
     }
-    console.log("Path del archivo: " + pathFile)
-  }, [infoRender.carpeta, qualities, getTipeByIndex]);
+  }, [infoRender.carpeta, formData.calidad]);
 
 
   useEffect(() => {
@@ -141,11 +119,6 @@ function VistaMision2(props) {
     }
   }, [infoRender.carpeta, formData.calidad, selectRandomFile]);
 
-
-  useEffect(() => {    
-      selectRandomFile();
-  }, [selectRandomFile]);
-
   const handleAnswer = (isSismo) => {
     // Determinar si la respuesta es correcta basándose en el tipo de señal actual
     const correctAnswer = currentSignalType === 'sismo'; // true si es sismo, false si es ruido
@@ -189,7 +162,7 @@ function VistaMision2(props) {
           position: 'fixed',
           top: '70px',           // padding pequeño desde el borde superior
           left: '10px',          // padding pequeño desde el borde izquierdo
-          zIndex: 2100           // por encima del globo y del contenido
+          zIndex: 1100           // por encima del globo y del contenido
         }}
       >
         <Dropdown drop="end">
@@ -225,10 +198,51 @@ function VistaMision2(props) {
         </Dropdown>
       </div>
 
-      <div className="titulo-container" length={1}>
-        <h1>Identifica qué es ruido y qué es sismo</h1>
-      </div>
+      <h1 style={{ 
+        color: 'white',
+        textAlign: 'center',
+        marginTop: '5px', 
+        width: '1050px', 
+        height: '50px',
+        fontSize: '60px',
+        marginLeft: '100px',
+        fontWeight: 600,
+        marginBottom: "20px"
+       }}>Identifica qué es ruido y qué es sismo</h1>
 
+      <div className="menu-desplegable">
+        <Button 
+          onClick={() => setOpen(!open)} 
+          aria-controls="example-collapse-text" 
+          aria-expanded={open}
+          style={{
+            marginLeft: '0px',
+            top: '100px',
+            width: '50px',
+            height: '50px',
+            borderRadius: '50%',
+            backgroundColor: 'red',
+            border: 'none',
+            color: 'white',
+            fontSize: '24px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            cursor: 'pointer'
+          }}
+        >
+          !
+        </Button>
+        <div style={{ position: 'absolute', left: '-420px', minHeight: '150px' }}>
+          <Collapse in={open} dimension="width">
+            <div id="example-collapse-text">
+              <Card body style={{ width: '400px' }}>
+                En esta misión la idea es a través de lo aprendido lograr identificar de forma visual lo que podría ser un sismo o simplemente ruido.
+              </Card>
+            </div>
+          </Collapse>
+        </div>
+      </div>
 
       <Row className="content">
         <Col xs={12} md={6} lg={6} xl={6} className="globo-mision1" ref={containerRef}>
@@ -237,38 +251,68 @@ function VistaMision2(props) {
 
         <Col xs={12} md={6} lg={6} xl={6} className="grafica-mision1">
           
-          {/* Contenedor de la gráfica con altura fija */}
-          <div className="grafica-container">
-            <SismoChart key={csvFileSucio} dataAddress={csvFileSucio} />  
-          </div>
-          
-          {/* Contenedor de botones mejorado */}
-          <div className="buttons-container">
-            <h1>⚡ Energía Restante: {score} Jules</h1>
-            <h2> Pregunta {currentQuestion} de {totalQuestions}</h2>
-            <h3>✅ Respuestas Correctas: {correctAnswersCount}</h3>
-            
-            <div className="game-buttons">
+          <Row xs={12} md={12} lg={12} xl={12}>
+            <div className="grafica-container">
+            <SismoChart key={csvFileSucio} dataAddress={csvFileSucio} />  {/* Pasar el offset de tiempo */}
+            {/* Pasar el offset de tiempo */}
+              <br></br>
+            </div>
+          </Row>
+          <Row xs={12} md={12} lg={12} xl={12} style={{ 
+            background: 'linear-gradient(100deg, #17294d, #2858b8)',
+            borderRadius : '40px',
+            marginLeft : '20px',
+            padding : '10px', 
+            width : '90%', 
+            color: 'white', 
+            textAlign: 'center',
+            minHeight: '300px'
+          }}>
+            <h1>Energia Restante: {score} Jules</h1>
+            <h2>Pregunta {currentQuestion} de {totalQuestions}</h2>
+            <h3>Respuestas Correctas: {correctAnswersCount}</h3>
+            <div style={{ display: 'flex', justifyContent: 'center', gap: '20px', marginTop: '20px' }}>
               <Button 
                 onClick={() => handleAnswer(true)} 
-                className="game-button sismo-button"
-              >
-                🌍 Sismo
+                style={{ 
+                  width: '200px', 
+                  height: '190px', 
+                  borderRadius: '50%', 
+                  fontSize: '30px', 
+                  backgroundColor: '#00bfa5', 
+                  border: 'none', 
+                  color: 'white', 
+                  display: 'inline-block',
+                  margin: '10px',
+                  fontWeight: 600
+
+                }}>
+                Sismo
               </Button>
               
               <Button 
                 onClick={() => handleAnswer(false)} 
-                className="game-button ruido-button"
-              >
-                📡 Ruido
+                style={{ 
+                  width: '200px', 
+                  height: '190px', 
+                  borderRadius: '50%', 
+                  fontSize: '30px', 
+                  backgroundColor: '#7178df', 
+                  border: 'none', 
+                  color: 'white', 
+                  display: 'inline-block',
+                  margin: '10px',
+                  fontWeight: 600
+                }}>
+                Ruido
               </Button>
             </div>
-          </div>
+          </Row>
           
         </Col>
       </Row>
 
-      <Modal show={showModal} onHide={resetGame} style={{ zIndex: 10000 }}>
+      <Modal show={showModal} onHide={resetGame}>
         <Modal.Header closeButton>
           <Modal.Title>Puntaje Final</Modal.Title>
         </Modal.Header>

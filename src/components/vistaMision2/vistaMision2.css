@@ -2,29 +2,48 @@
   
   /* Menú desplegable sobre el fondo */
   .menu-desplegable-planeta {
-    position: absolute;
-    top: 150px;
+    position: fixed;
+    top: calc(56px + 20px);  /* Debajo del navbar fijo */
     left: 20px;
     z-index: 10;
   }
   
   .menu-desplegable {
-    position: absolute;
-    top: 20px;
-    left: 1800px;
+    position: fixed;
+    top: calc(56px + 20px);  /* Debajo del navbar fijo */
+    right: 20px;
     z-index: 10;
   }
   
-  
 
+  .titulo-container {
+    position: absolute;   /* se fija respecto a .home-container */
+    top: 10px; left: 0; right: 0; /* Más cerca del borde superior */
+    display: flex;
+    justify-content: center;
+    z-index: 1200;
+    height: 60px; /* Altura fija para el título */
+  }
+  
+  .titulo-container h1 {
+    position: static;     /* quita el absolute del h1 si usas este método */
+    margin: 0;
+    color: #e5e7eb;
+    font-size: 40px; /* Tamaño más pequeño */
+    font-weight: 300;
+    line-height: 1.2; /* Mejor espaciado de línea */
+  }
+  
   
   .vista-mision-container {
     position: relative;
     background-color: #ffffff; 
-    min-height: 100vh; 
+    min-height: calc(100vh - 56px); 
     width: 100%;
-    height: 100vh; /* Asegurarse de ocupar toda la altura */
+    max-width: 100vw;     /* Asegura que no exceda el ancho del viewport */
+    height: calc(100vh - 56px); /* Altura menos el navbar fijo */
     overflow: hidden;
+    overflow-x: hidden;   /* Previene scroll horizontal específicamente */
   }
   
   .globo-mision1 {
@@ -41,4 +60,135 @@
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+
+  /* Contenedor de la gráfica con altura fija */
+  .grafica-container {
+    height: 40%; /* Altura fija para evitar movimiento */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 80px; /* Espacio desde el título */
+    margin-bottom: 10px; /* Menos separación con los botones */
+  }
+
+  /* Contenedor de botones mejorado */
+  .buttons-container {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 25px;
+    padding: 15px 10px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: white;
+    text-align: center;
+    margin-top: 5px; /* Menos separación de la gráfica */
+    flex-shrink: 0; /* Evita que se comprima */
+  }
+
+  .buttons-container h1 {
+    font-size: 28px;
+    margin-bottom: 10px;
+    font-weight: 600;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  }
+
+  .buttons-container h2 {
+    font-size: 20px;
+    margin-bottom: 8px;
+    font-weight: 400;
+    opacity: 0.9;
+  }
+
+  .buttons-container h3 {
+    font-size: 18px;
+    margin-bottom: 25px;
+    font-weight: 500;
+    color: #a8e6cf;
+  }
+
+  /* Botones mejorados */
+  .game-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    margin-top: 20px;
+  }
+
+  .game-button {
+    width: 160px !important;
+    height: 160px !important;
+    border-radius: 50% !important;
+    font-size: 24px !important;
+    font-weight: 700 !important;
+    border: none !important;
+    color: white !important;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2) !important;
+    position: relative !important;
+    overflow: hidden !important;
+  }
+
+  .game-button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(45deg, rgba(255,255,255,0.1), rgba(255,255,255,0));
+    border-radius: 50%;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .game-button:hover::before {
+    opacity: 1;
+  }
+
+  .game-button:hover {
+    transform: translateY(-5px) scale(1.05) !important;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3) !important;
+  }
+
+  .game-button:active {
+    transform: translateY(-2px) scale(1.02) !important;
+  }
+
+  .sismo-button {
+    background: linear-gradient(135deg, #00bfa5, #00a693) !important;
+  }
+
+  .sismo-button:hover {
+    background: linear-gradient(135deg, #00d4b8, #00bfa5) !important;
+  }
+
+  .ruido-button {
+    background: linear-gradient(135deg, #7178df, #5a67d8) !important;
+  }
+
+  .ruido-button:hover {
+    background: linear-gradient(135deg, #8b92e8, #7178df) !important;
+  }
+
+  /* Responsividad */
+  @media (max-width: 768px) {
+    .game-buttons {
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+    }
+    
+    .game-button {
+      width: 140px !important;
+      height: 140px !important;
+      font-size: 20px !important;
+    }
+    
+    .buttons-container h1 {
+      font-size: 24px;
+    }
   }

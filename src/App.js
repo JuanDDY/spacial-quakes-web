@@ -1,58 +1,34 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import 'bootstrap/dist/css/bootstrap.min.css';
+// Si vas a GH Pages, usa HashRouter:
+// import { HashRouter as BrowserRouter, Routes, Route } from "react-router-dom";
 
-import GlobeComponent from './components/GlobeComponent'; 
-import NavBar from './components/NavBar'; 
-import Home from './components/Home'; 
+import "bootstrap/dist/css/bootstrap.min.css";
 
-import Modelo from './components/modelo/modelo'; 
+import NavBar from "./components/NavBar";
+import Home from "./components/Home";
+import Modelo from "./components/modelo/modelo";
+import VistaMision1 from "./components/vistaMision1/VistaMision1";
+import VistaMision2 from "./components/vistaMision2/VistaMision2";
+import Grupo_descripcion from "./components/Grupo_descripcion";
 
-import SismoChart from './components/graficas/SismoChart'; 
-import Graffic2 from './components/graficas/Graffic2'; 
-
-import Grupo_descripcion from './components/Grupo_descripcion';
-
-import VistaMision1 from './components/vistaMision1/VistaMision1'; 
-import VistaMision2 from './components/vistaMision2/VistaMision2'; 
-
-import VistaMisionxx from './components/vistaMision1/VistaMisionxx'; 
-
-import {IntlProvider} from 'react-intl';
-
+import { IntlProvider } from "react-intl";
 import localeEsMessages from "./locales/es";
 import localeEnMessages from "./locales/en";
-/*
-async function loadCSV(url) {
-  const response = await fetch(url); 
-  const text = await response.text(); 
-  const rows = text.split('\n');
-  const data = rows.map(row => row.split(','));
-  //console.log(data); 
-  const data2 = data.slice(1).map(d => ({
-    date: new Date(d[0]), // Convertir la fecha a un objeto Date
-    close: +d[1]          // Convertir el valor de cierre a número
-  }));
-  //console.log(data2);
-  return data2;
-}
-const datitos = await loadCSV('/dataProvisional/pruebas.csv');
-console.log(datitos);
-*/ 
-
-
 
 function App() {
-  
-  const [dataAddress, setDataAddres] = useState("/dataProvisional/pruebas1000.csv");
+  const [dataAddress] = useState(
+    "/dataProvisional/pruebas1000.csv"
+    // En prod/GH Pages:
+    // process.env.PUBLIC_URL + "/dataProvisional/pruebas1000.csv"
+  );
 
   const [locale, setLocale] = useState("es-ES");
   const [messages, setMessages] = useState(localeEsMessages);
 
   useEffect(() => {
-    const browserLanguage = navigator.language;
-
-    if (browserLanguage.startsWith("es")) {
+    const browserLanguage = navigator.language || "es";
+    if (browserLanguage.toLowerCase().startsWith("es")) {
       setLocale("es-ES");
       setMessages(localeEsMessages);
     } else {
@@ -60,20 +36,20 @@ function App() {
       setMessages(localeEnMessages);
     }
   }, []);
-   
 
   return (
     <div className="App">
-      <IntlProvider locale={locale} messages={messages}>
-        <NavBar></NavBar>
+      <IntlProvider key={locale} locale={locale} messages={messages}>
         <BrowserRouter>
+          <NavBar />
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/home" element={<Home />} />
-            <Route path="/modelo" element={<Modelo dataAddress={dataAddress} />} /> 
-            <Route path="/mision1" element={<VistaMisionxx dataAddress={dataAddress}/>} />
+            <Route path="/modelo" element={<Modelo dataAddress={dataAddress} />} />
+            <Route path="/mision1" element={<VistaMision1 dataAddress={dataAddress} />} />
             <Route path="/mision2" element={<VistaMision2 dataAddress={dataAddress} />} />
-            <Route path="/descripcion" element={<Grupo_descripcion/>} />
+            <Route path="/descripcion" element={<Grupo_descripcion />} />
+            <Route path="*" element={<Home />} /> {/* 404 -> Home */}
           </Routes>
         </BrowserRouter>
       </IntlProvider>
@@ -82,4 +58,3 @@ function App() {
 }
 
 export default App;
-

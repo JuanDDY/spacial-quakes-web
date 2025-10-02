@@ -1,28 +1,57 @@
-import React, { useState } from 'react';
-import './Home.css';
+import React, { useEffect, useState } from "react";
+import "./Home.css";
 import { Link } from "react-router-dom";
 
 function Home() {
   const [isMarteModalOpen, setIsMarteModalOpen] = useState(false);
   const [isLunaModalOpen, setIsLunaModalOpen] = useState(false);
-  const [activeTab, setActiveTab] = useState(0);
-  const [showOverlay, setShowOverlay] = useState(false); 
+  const [marteTab, setMarteTab] = useState(0);
+  const [lunaTab, setLunaTab] = useState(0);
+  const [showOverlay, setShowOverlay] = useState(false);
 
-  const handleNextTab = () => {
-    setActiveTab((prevTab) => (prevTab + 1) % 2);
-  };
+  const handleNextMarteTab = () => setMarteTab((t) => (t + 1) % 2);
+  const handleNextLunaTab = () => setLunaTab((t) => (t + 1) % 2);
 
   const closeModal = () => {
     setIsMarteModalOpen(false);
     setIsLunaModalOpen(false);
-    setActiveTab(0);
+    setMarteTab(0);
+    setLunaTab(0);
   };
 
-  const handleOverlayClick = (e) => {
-    if (e.target.classList.contains('overlay-container')) {
-      setShowOverlay(false); // Cerrar el overlay si se hace clic fuera de los botones
-    }
-  };
+  // Cerrar con tecla Escape
+  useEffect(() => {
+    const onEsc = (e) => {
+      if (e.key === "Escape") {
+        setShowOverlay(false);
+        closeModal();
+      }
+    };
+    window.addEventListener("keydown", onEsc);
+    return () => window.removeEventListener("keydown", onEsc);
+  }, []);
+
+  // Bloquear scroll del body cuando haya overlay o modales abiertos
+  useEffect(() => {
+    const open = isMarteModalOpen || isLunaModalOpen || showOverlay;
+    document.body.style.overflow = open ? "hidden" : "";
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [isMarteModalOpen, isLunaModalOpen, showOverlay]);
+
+  // Pre-carga de imágenes para evitar parpadeos
+  useEffect(() => {
+    const sources = [
+      "/imagesHome/marte_home2.png",
+      "/imagesHome/luna_home2.png",
+      "/imagesHome/astronauta4.png",
+    ];
+    sources.forEach((src) => {
+      const img = new Image();
+      img.src = process.env.PUBLIC_URL + src;
+    });
+  }, []);
 
   return (
     <div className="home-container">
@@ -30,44 +59,88 @@ function Home() {
       <div className="background-gif"></div>
 
       {/* Título principal */}
-      <div className="titulo-container">
+      <div className="titulo-container" length={1}>
         <h1>Explora y detecta sismos en otros mundos</h1>
       </div>
 
       {/* Imágenes centrales */}
       <div className="centro-imagen">
         <img
-          src="imagesHome/marte_home2.png"
+          src={process.env.PUBLIC_URL + "/imagesHome/marte_home2.png"}
           alt="Marte"
           className="marte-img"
-          onClick={() => setIsMarteModalOpen(true)}
+          role="button"
+          tabIndex={0}
+          onClick={() => {
+            setIsMarteModalOpen(true);
+            setMarteTab(0);
+            setIsLunaModalOpen(false);
+          }}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" || e.key === " ") {
+              setIsMarteModalOpen(true);
+              setMarteTab(0);
+              setIsLunaModalOpen(false);
+            }
+          }}
         />
         <img
-          src="imagesHome/luna_home2.png"
+          src={process.env.PUBLIC_URL + "/imagesHome/luna_home2.png"}
           alt="Luna"
           className="luna-img"
-          onClick={() => setIsLunaModalOpen(true)}
+          role="button"
+          tabIndex={0}
+          onClick={() => {
+            setIsLunaModalOpen(true);
+            setLunaTab(0);
+            setIsMarteModalOpen(false);
+          }}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" || e.key === " ") {
+              setIsLunaModalOpen(true);
+              setLunaTab(0);
+              setIsMarteModalOpen(false);
+            }
+          }}
         />
-        <img src="imagesHome/astronauta4.png" alt="Astronauta" className="astronauta-img" />
+        <div className="astronauta-wrap">
+          <img
+            src={process.env.PUBLIC_URL + "/imagesHome/astronauta4.png"}
+            alt="Astronauta"
+            className="astronauta-img"
+          />
+        </div>
+
       </div>
 
       {/* Botón para empezar misión */}
       <div className="boton-container">
-        <button className="boton-mision" onClick={() => setShowOverlay(true)}>Empezar misión</button>
+        <button
+          className="boton-mision"
+          onClick={() => setShowOverlay(true)}
+          aria-haspopup="dialog"
+          aria-expanded={showOverlay}
+        >
+          Empezar misión
+        </button>
       </div>
 
       <div className="seisminds-text">
-        <Link to="/descripcion/">
-          SEISMinds
-        </Link>
+        <Link to="/descripcion">SEISMinds</Link>
       </div>
 
       {/* Modal de Marte */}
       {isMarteModalOpen && (
-        <div className="modal-overlay">
-          <div className="modal-content">
-            <h2>Explora Marte</h2>
-            {activeTab === 0 && (
+        <div
+          className="modal-overlay"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="marte-title"
+          onClick={closeModal}
+        >
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <h2 id="marte-title">Explora Marte</h2>
+            {marteTab === 0 && (
               <div>
                 <p>Datos Curiosos:</p>
                 <ul>
@@ -76,7 +149,7 @@ function Home() {
                 </ul>
               </div>
             )}
-            {activeTab === 1 && (
+            {marteTab === 1 && (
               <div>
                 <p>¿Sabías que?</p>
                 <ul>
@@ -85,18 +158,28 @@ function Home() {
                 </ul>
               </div>
             )}
-            <button onClick={handleNextTab} className="arrow-button">→</button>
-            <button onClick={closeModal} className="close-button">Cerrar</button>
+            <button onClick={handleNextMarteTab} className="arrow-button" aria-label="Siguiente">
+              →
+            </button>
+            <button onClick={closeModal} className="close-button" aria-label="Cerrar">
+              Cerrar
+            </button>
           </div>
         </div>
       )}
 
       {/* Modal de la Luna */}
       {isLunaModalOpen && (
-        <div className="modal-overlay">
-          <div className="modal-content">
-            <h2>Explora la Luna</h2>
-            {activeTab === 0 && (
+        <div
+          className="modal-overlay"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="luna-title"
+          onClick={closeModal}
+        >
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <h2 id="luna-title">Explora la Luna</h2>
+            {lunaTab === 0 && (
               <div>
                 <p>Datos Curiosos:</p>
                 <ul>
@@ -105,7 +188,7 @@ function Home() {
                 </ul>
               </div>
             )}
-            {activeTab === 1 && (
+            {lunaTab === 1 && (
               <div>
                 <p>¿Sabías que?</p>
                 <ul>
@@ -114,64 +197,65 @@ function Home() {
                 </ul>
               </div>
             )}
-            <button onClick={handleNextTab} className="arrow-button">→</button>
-            <button onClick={closeModal} className="close-button">Cerrar</button>
+            <button onClick={handleNextLunaTab} className="arrow-button" aria-label="Siguiente">
+              →
+            </button>
+            <button onClick={closeModal} className="close-button" aria-label="Cerrar">
+              Cerrar
+            </button>
           </div>
         </div>
       )}
 
       {/* Overlay que aparece al hacer clic en "Empezar misión" */}
       {showOverlay && (
-        <div className={`overlay-container ${showOverlay ? 'show' : ''}`} onClick={handleOverlayClick}>
-          <div className="misiones-container">
+        <div
+          className={`overlay-container show`}
+          role="dialog"
+          aria-modal="true"
+          onClick={(e) => {
+            // cerrar solo si se hace click en el fondo (no en el contenido)
+            if (e.currentTarget === e.target) setShowOverlay(false);
+          }}
+        >
+          <div className="misiones-container" onClick={(e) => e.stopPropagation()}>
             <h2>Bienvenido a la detección de sismos</h2>
-            <p>Aquí encontrarás los elementos necesarios para saber todo sobre los sismos en Marte y la Luna.</p>
+            <p>
+              Aquí encontrarás los elementos necesarios para saber todo sobre los sismos en Marte y la Luna.
+            </p>
             <div className="botones-mision">
               <div className="boton-wrapper">
-                <Link to="/mision1/">
-                  <button 
-                    className="boton-mision1"
-                    href="/mision1"
-                  >
-                    Misión 1
-                  </button>
+                <Link to="/mision1" className="boton-mision1">
+                  Misión 1
                 </Link>
-                
                 <div className="mission-info">
                   <p>Señales con ruido y ondas filtradas para los sismos</p>
                 </div>
               </div>
 
               <div className="boton-wrapper">
-                <Link to="/mision2/">
-                  <button 
-                    className="boton-mision2"
-                    href="/mision2"
-                  >
-                    Misión 2
-                  </button>
+                <Link to="/mision2" className="boton-mision2">
+                  Misión 2
                 </Link>
-                
                 <div className="mission-info">
-                  <p>Ondas aleatorias para que el usario intente detectar si es un sismo</p>
+                  <p>Ondas aleatorias para que el usuario intente detectar si es un sismo</p>
                 </div>
               </div>
 
               <div className="boton-wrapper">
-                <Link to="/modelo/">
-                  <button 
-                    className="boton-modelo"
-                    href="/modelo"
-                  >
-                    Modelo
-                  </button>
+                <Link to="/modelo" className="boton-modelo">
+                  Modelo
                 </Link>
-                
-
                 <div className="mission-info">
                   <p>Explora el modelo de detección.</p>
                 </div>
               </div>
+            </div>
+
+            <div style={{ marginTop: 24 }}>
+              <button className="close-button" onClick={() => setShowOverlay(false)} aria-label="Cerrar">
+                Cerrar
+              </button>
             </div>
           </div>
         </div>

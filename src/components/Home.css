@@ -1,16 +1,16 @@
 :root {
   /* Variables de posición y tamaño para las imágenes */
-  --marte-left: 10%; /* Posición horizontal de Marte */
-  --marte-bottom: -20%; /* Posición vertical de Marte */
-  --marte-size: 650px; /* Tamaño de Marte */
+  --marte-left: 5%; /* Posición horizontal de Marte */
+  --marte-bottom:0%; /* Posición vertical de Marte */
+  --marte-size: 45%; /* Tamaño de Marte */
 
-  --luna-left: 35%; /* Posición horizontal de la Luna */
-  --luna-bottom: 0%; /* Posición vertical de la Luna */
-  --luna-size: 500px; /* Tamaño de la Luna */
+  --luna-left: 40%; /* Posición horizontal de la Luna */
+  --luna-bottom: 12%; /* Posición vertical de la Luna */
+  --luna-size: 30%; /* Tamaño de la Luna */
 
-  --astronauta-right: 4%; /* Posición horizontal del Astronauta */
-  --astronauta-top: -60%; /* Posición vertical del Astronauta */
-  --astronauta-size: 950px; /* Tamaño del Astronauta */
+  --astronauta-right: 5%; /* Posición horizontal del Astronauta */
+  --astronauta-bottom: 10%; /* Posición vertical del Astronauta */
+  --astronauta-size: 45%; /* Tamaño del Astronauta */
 
   /* Variables para la posición y tamaño del botón */
   --boton-bottom: 7%; /* Posición vertical del botón */
@@ -24,39 +24,59 @@
   --seisminds-font-size: 50px; /* Tamaño de la fuente */
 }
 
-/* Contenedor principal que ocupa toda la pantalla */
+/* Contenedor principal: usa altura dinámica del viewport y evita scroll accidental */
 .home-container {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 100vh; 
-  background: linear-gradient(to bottom, #000407, #042431); 
+  width: 100%;
+  max-width: 100vw;     /* Asegura que no exceda el ancho del viewport */
+
+  /* Altura de viewport menos la altura del navbar fijo */
+  height: calc(100vh - 56px);
+  height: calc(100dvh - 56px);
+}
+@supports (height: 100svh) {
+  .home-container { height: calc(100svh - 56px); } /* iOS/Android modernos */
+}
+
+/* Mantén el resto de propiedades que ya tienes */
+.home-container {
+  background: linear-gradient(to bottom, #000407, #042431);
   transition: background 0.3s ease, transform 1s ease;
   text-align: center;
-  padding: 10 50px;
+  padding: 10px 50px;
   font-family: 'Trebuchet MS', sans-serif;
-  position: relative; 
+  position: relative;
+
+  overflow-x: hidden;   /* evita barras horizontales */
+  overflow-y: hidden;   /* ← bloquea scroll vertical */
 }
 
-/* Estilo del título */
+.titulo-container {
+  position: absolute;   /* se fija respecto a .home-container */
+  top: 0; left: 0; right: 0;
+  display: flex;
+  justify-content: center;
+}
+
 .titulo-container h1 {
-  position: absolute; 
-  top: 0%; 
-  left: 10%; 
-  font-size: 90px;
-  font-weight: 1000; 
-  font-family: 'Anton', sans-serif; 
-  color: #e5e7eb;
+  position: static;     /* quita el absolute del h1 si usas este método */
   margin: 0;
-  padding: 0;
+  color: #e5e7eb;
+  font-size: 50px;
+  font-weight: 300;
 }
 
-/* Posicionamiento absoluto de las imágenes */
+
+/* --- Ajuste del escenario para que no empuje el layout --- */
 .centro-imagen {
-  position: relative; 
-  width: 100%; 
-  height: 400px; 
+  position: relative;
+  width: 100%;
+  max-width: 90%;
+  height: 70%; /* clamp(300px, 42vw, 500px); /* alto flexible sin provocar scroll */
+  margin: 0 auto;
 }
 
 /* Imagen de Marte como botón */
@@ -112,7 +132,7 @@
 .astronauta-img {
   position: absolute;
   right: var(--astronauta-right);
-  top: var(--astronauta-top);
+  bottom: var(--astronauta-bottom);
   width: var(--astronauta-size);
   height: auto;
   
@@ -120,35 +140,54 @@
   animation: flotar 4s ease-in-out infinite;
 }
 
-/* Posicionamiento absoluto del botón */
+
+/* --- Botón fijo y centrado al fondo --- */
 .boton-container {
-  position: absolute;
-  bottom: var(--boton-bottom); 
-  width: var(--boton-width); 
-  display: flex;
-  justify-content: center; 
+  position: fixed;
+  left: 50%;
+  transform: translateX(-50%);
+  /* usa safe-area en móviles + margen adaptable */
+  bottom: calc(max(16px, env(safe-area-inset-bottom)));
+  width: auto;
+  z-index: 20; /* por encima de imágenes */
 }
 
-
-
-/* Estilo del botón con gradiente difuminado */
+/* botón más responsivo */
 .boton-mision {
-  padding: var(--boton-padding);
-  background: linear-gradient(100deg, #17294d, #2858b8); 
+  padding: clamp(10px, 2.2vw, 16px) clamp(20px, 4vw, 40px);
+  font-size: clamp(16px, 3.2vw, 32px);
+  background: linear-gradient(100deg, #17294d, #2858b8);
   color: white;
   border: none;
   border-radius: 50px;
-  font-size: var(--boton-font-size); 
   font-weight: bold;
   cursor: pointer;
   box-shadow: 0 8px 15px rgba(0, 0, 0, 0.4);
   transition: background 0.3s ease, transform 0.3s ease;
 }
 
-.boton-mision:hover {
-  background: linear-gradient(135deg, #60a5fa, #3b82f6);
-  transform: scale(1.05);
+/* --- Link SEISMinds fijo en la esquina inferior derecha --- */
+.seisminds-text {
+  position: fixed;
+  right: clamp(12px, 3vw, 24px);
+  bottom: calc(max(12px, env(safe-area-inset-bottom)));
+  font-size: clamp(14px, 2.4vw, 24px);
+  color: rgba(255, 255, 255, 0.35);
+  font-weight: bold;
+  letter-spacing: 2px;
+  text-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
+  z-index: 20; /* por encima de imágenes */
 }
+
+/* Si prefieres que SEISMinds se vea como link */
+.seisminds-text a {
+  color: inherit;
+  text-decoration: none;
+}
+.seisminds-text a:hover {
+  text-decoration: underline;
+}
+
 
 /* Efecto de difuminado en el fondo cuando la misión comienza */
 .blur-background {

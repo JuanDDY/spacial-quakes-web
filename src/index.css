@@ -11,3 +11,17 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+
+html, body, #root {
+  height: 100%;
+  width: 100%;
+  overflow-x: hidden;   /* Previene scroll horizontal en toda la aplicación */
+}
+body {
+  margin: 0;            /* ← elimina el scroll por margen del body */
+  overflow-x: hidden;   /* Previene scroll horizontal específicamente en body */
+}
+* {
+  box-sizing: border-box;
+}
