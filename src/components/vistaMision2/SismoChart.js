@@ -8,13 +8,19 @@ const SismoChart = ( props ) => {
   const [data, setData] = useState([]);
 
   useEffect(() => {
+    // Verificar que dataAddress esté definido antes de intentar cargar
+    if (!props.dataAddress) {
+      console.warn('No se proporcionó dataAddress para cargar el CSV');
+      setData([]);
+      return;
+    }
     
     d3.csv(props.dataAddress).then(data => {
       var i = 1;
       const parsedData = data.map(d => {
         const time = +d.time;  // Convertir el tiempo a número
         const dataValue = +d.data;  // Convertir la amplitud a número
-        if(i === 1) { console.log(d.time); i++; }
+        if(i === 1) { i++; }
         
         // Validar que ambos sean números y no NaN
         if (isNaN(time) || isNaN(dataValue)) {
@@ -26,6 +32,9 @@ const SismoChart = ( props ) => {
       }).filter(d => d !== null);  // Filtrar los valores inválidos
 
       setData(parsedData);
+    }).catch(error => {
+      console.error('Error cargando el archivo CSV:', error);
+      setData([]);
     });
   }, [props]);
 
@@ -38,6 +47,8 @@ const SismoChart = ( props ) => {
     const height = 250 - margin.top - margin.bottom; // Altura reducida
 
     // Seleccionar el contenedor y limpiar gráficos previos
+    d3.select(chartRef.current).selectAll("*").remove(); // Limpiar contenido previo
+    
     const svg = d3.select(chartRef.current)
       .attr('width', width + margin.left + margin.right)
       .attr('height', height + margin.top + margin.bottom)

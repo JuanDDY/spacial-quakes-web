@@ -48,7 +48,6 @@ function VistaMision1() {
     
     selectRandomFile();
     setDataEnMano(true);
-    console.log("Cosas")
     // Agregar nuevo sismo
     setSismos([...sismos, newSismo]);
     setParametersConfirmed(true); // Confirmar parámetros
@@ -77,10 +76,8 @@ function VistaMision1() {
       index = Math.floor(Math.random() * csvFileSucio.length);
       const randomFile = csvFileSucio[index];
       setCsvFileSucio(randomFile);
-      console.log("Señal sucia: " + randomFile)
       const randomFile2 = csvFileLimpio[index];
       setCsvFileLimpio(randomFile2);
-      console.log("Señal limpia: " + randomFile2)
     
     } else {
       const listaAleatoria  = getInSightFiles(formData.calidad);
@@ -91,10 +88,8 @@ function VistaMision1() {
       index = Math.floor(Math.random() * csvFileSucio.length);
       const randomFile = csvFileSucio[index];
       setCsvFileSucio(randomFile);
-      console.log("Señal sucia: " + randomFile)
       const randomFile2 = csvFileLimpio[index];
       setCsvFileLimpio(randomFile2);
-      console.log("Señal limpia: " + randomFile2)
     }
   }
  

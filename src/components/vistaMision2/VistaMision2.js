@@ -55,8 +55,8 @@ function VistaMision2(props) {
 
       indexType = Math.floor(Math.random() * 2);
       setCurrentSignalType(getTipeByIndex(indexType))
-      console.log("Tipo de señal: " + indexType)
-      console.log("Tipo de señal: " + getTipeByIndex(indexType))
+      //console.log("Tipo de señal: " + indexType)
+      //console.log("Tipo de señal: " + getTipeByIndex(indexType))
       if(indexType === 0){
         qualitySeismic = Math.floor(Math.random() * 3)
         numFile = Math.floor(Math.random() * 10)
@@ -65,14 +65,15 @@ function VistaMision2(props) {
       } else {
         numFile = Math.floor(Math.random() * 10)
         pathFile = `/data/lunar/no_seismic/Moon-APOLLO_noseismic_${numFile}.csv`
+        setCsvFileSucio(pathFile);
       }
     
     } else {
       
       indexType = Math.floor(Math.random() * 2);
       setCurrentSignalType(getTipeByIndex(indexType))
-      console.log("Tipo de señal: " + indexType)
-      console.log("Tipo de señal: " + getTipeByIndex(indexType))
+      //console.log("Tipo de señal: " + indexType)
+      //console.log("Tipo de señal: " + getTipeByIndex(indexType))
       if(indexType === 0){
         qualitySeismic = Math.floor(Math.random() * 3)
         if(qualitySeismic === 0){
@@ -85,9 +86,10 @@ function VistaMision2(props) {
       } else {
         numFile = Math.floor(Math.random() * 10)
         pathFile = `/data/mars/no_seismic/Mars-InSight_noseismic_${numFile}.csv`
+        setCsvFileSucio(pathFile);
       }
     }
-    console.log("Path del archivo: " + pathFile)
+    //console.log("Path del archivo: " + pathFile)
   }, [infoRender.carpeta, qualities, getTipeByIndex]);
 
 

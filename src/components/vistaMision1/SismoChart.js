@@ -14,7 +14,7 @@ const SismoChart = ( props ) => {
       const parsedData = data.map(d => {
         const time = +d.time;  // Convertir el tiempo a número
         const dataValue = +d.data;  // Convertir la amplitud a número
-        if(i === 1) { console.log(d.time); i++; }
+        if(i === 1) { i++; }
         
         // Validar que ambos sean números y no NaN
         if (isNaN(time) || isNaN(dataValue)) {
