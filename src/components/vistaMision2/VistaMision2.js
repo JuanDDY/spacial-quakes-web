@@ -27,7 +27,7 @@ function VistaMision2(props) {
   const [qualities, ] = useState(['A', 'B', 'C'])
 
   const [infoRender, setInfoRender] = useState({
-    planetAddress : '/images/lunar_surface.jpg',
+    planetAddress : `${process.env.PUBLIC_URL}/images/lunar_surface.jpg`,
     colorOndas : (t => `rgba(255,0,0,1)`)
   })
 
@@ -60,11 +60,11 @@ function VistaMision2(props) {
       if(indexType === 0){
         qualitySeismic = Math.floor(Math.random() * 3)
         numFile = Math.floor(Math.random() * 10)
-        pathFile = `/data/lunar/${qualities[qualitySeismic]}/Moon-APOLLO_${qualities[qualitySeismic]}_${numFile}.csv`
+        pathFile = `${process.env.PUBLIC_URL}/data/lunar/${qualities[qualitySeismic]}/Moon-APOLLO_${qualities[qualitySeismic]}_${numFile}.csv`
         setCsvFileSucio(pathFile);
       } else {
         numFile = Math.floor(Math.random() * 10)
-        pathFile = `/data/lunar/no_seismic/Moon-APOLLO_noseismic_${numFile}.csv`
+        pathFile = `${process.env.PUBLIC_URL}/data/lunar/no_seismic/Moon-APOLLO_noseismic_${numFile}.csv`
         setCsvFileSucio(pathFile);
       }
     
@@ -81,11 +81,11 @@ function VistaMision2(props) {
         } else {
           numFile = Math.floor(Math.random() * 10)
         }
-        pathFile = `/data/mars/${qualities[qualitySeismic]}/Mars-InSight_${qualities[qualitySeismic]}_${numFile}.csv`
+        pathFile = `${process.env.PUBLIC_URL}/data/mars/${qualities[qualitySeismic]}/Mars-InSight_${qualities[qualitySeismic]}_${numFile}.csv`
         setCsvFileSucio(pathFile);
       } else {
         numFile = Math.floor(Math.random() * 10)
-        pathFile = `/data/mars/no_seismic/Mars-InSight_noseismic_${numFile}.csv`
+        pathFile = `${process.env.PUBLIC_URL}/data/mars/no_seismic/Mars-InSight_noseismic_${numFile}.csv`
         setCsvFileSucio(pathFile);
       }
     }
@@ -202,24 +202,38 @@ function VistaMision2(props) {
             <Dropdown.Item
               onClick={() =>
                 setInfoRender({
-                  planetAddress: '/images/lunar_surface.jpg',
+                  planetAddress: `${process.env.PUBLIC_URL}/images/lunar_surface.jpg`,
                   colorOndas: (t) => `rgba(255,100,50,1)`,
                   carpeta: 'lunar'
                 })
               }
-              className="custom-dropdown-item-luna"
+              style={{
+                backgroundImage: `url('${process.env.PUBLIC_URL}/imageButtons/texturaLuna.jpg')`,
+                backgroundSize: 'cover',
+                backgroundRepeat: 'no-repeat',
+                backgroundPosition: 'center',
+                color: 'white',
+                padding: '10px'
+              }}
             >
               Ver Misión Luna
             </Dropdown.Item>
             <Dropdown.Item
               onClick={() =>
                 setInfoRender({
-                  planetAddress: '/images/2k_mars.jpg',
+                  planetAddress: `${process.env.PUBLIC_URL}/images/2k_mars.jpg`,
                   colorOndas: (t) => `rgba(50, 150, 255, 1)`,
                   carpeta: 'mars'
                 })
               }
-              className="custom-dropdown-item-marte"
+              style={{
+                backgroundImage: `url('${process.env.PUBLIC_URL}/imageButtons/texturaMarte.jpg')`,
+                backgroundSize: 'cover',
+                backgroundRepeat: 'no-repeat',
+                backgroundPosition: 'center',
+                color: 'white',
+                padding: '10px'
+              }}
             >
               Ver Misión Marte
             </Dropdown.Item>

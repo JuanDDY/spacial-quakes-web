@@ -83,33 +83,4 @@
     }
   }
 
-/*Botones seleccion de planeta*/
-
-.custom-dropdown-item-luna {
-  background-image: url('/public/imageButtons/texturaLuna.jpg'); /* Imagen de la Luna */
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: center;
-  color: white; /* Color del texto */
-  padding: 10px;
-}
-
-.custom-dropdown-item-luna:hover {
-  background-color: rgba(255, 255, 255, 0.8); /* Efecto hover */
-  color: black; /* Cambia el color del texto al hacer hover */
-}
-
-/* Estilo para el item con la imagen de Marte */
-.custom-dropdown-item-marte {
-  background-image: url('/public/imageButtons/texturaMarte.jpg'); /* Imagen de Marte */
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: center;
-  color: white;
-  padding: 10px;
-}
-
-.custom-dropdown-item-marte:hover {
-  background-color: rgba(255, 0, 0, 0.6); /* Efecto hover */
-  color: white;
-}
+/*Botones seleccion de planeta - Ahora usando estilos inline en los componentes React*/

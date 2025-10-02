@@ -17,8 +17,8 @@ function GlobeComponent() {
 
         
     const planet = Globe()
-      .globeImageUrl('/images/2k_mars.jpg')  // Para IKER: Cambiar aca la imagen de lo que se quiera grafica
-      .bumpImageUrl('/images/lunar_bumpmap.jpg')
+      .globeImageUrl(`${process.env.PUBLIC_URL}/images/2k_mars.jpg`)  // Para IKER: Cambiar aca la imagen de lo que se quiera grafica
+      .bumpImageUrl(`${process.env.PUBLIC_URL}/images/lunar_bumpmap.jpg`)
       .backgroundImageUrl('//unpkg.com/three-globe/example/img/night-sky.png')
       .showGraticules(true)
       .showAtmosphere(false) 
@@ -38,7 +38,7 @@ function GlobeComponent() {
     planet(globeEl.current);
 
     // Fetch and update the landing sites data
-    fetch('/path-to/moon_landings.json')
+    fetch(`${process.env.PUBLIC_URL}/path-to/moon_landings.json`)
       .then(r => r.json())
       .then(landingSites => {
         planet.labelsData(landingSites);

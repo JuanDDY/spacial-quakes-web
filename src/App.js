@@ -18,9 +18,7 @@ import localeEnMessages from "./locales/en";
 
 function App() {
   const [dataAddress] = useState(
-    "/dataProvisional/pruebas1000.csv"
-    // En prod/GH Pages:
-    // process.env.PUBLIC_URL + "/dataProvisional/pruebas1000.csv"
+    process.env.PUBLIC_URL + "/dataProvisional/pruebas1000.csv"
   );
 
   const [locale, setLocale] = useState("es-ES");
