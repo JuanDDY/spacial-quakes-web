@@ -17,11 +17,6 @@ import localeEsMessages from "./locales/es";
 import localeEnMessages from "./locales/en";
 
 function App() {
-  const [dataAddress] = useState(
-    "/dataProvisional/pruebas1000.csv"
-    // En prod/GH Pages:
-    // process.env.PUBLIC_URL + "/dataProvisional/pruebas1000.csv"
-  );
 
   const [locale, setLocale] = useState("es-ES");
   const [messages, setMessages] = useState(localeEsMessages);
@@ -45,9 +40,9 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/home" element={<Home />} />
-            <Route path="/modelo" element={<Modelo dataAddress={dataAddress} />} />
-            <Route path="/mision1" element={<VistaMision1 dataAddress={dataAddress} />} />
-            <Route path="/mision2" element={<VistaMision2 dataAddress={dataAddress} />} />
+            <Route path="/modelo" element={<Modelo  />} />
+            <Route path="/mision1" element={<VistaMision1  />} />
+            <Route path="/mision2" element={<VistaMision2  />} />
             <Route path="/descripcion" element={<GrupoDescripcion />} />
             <Route path="*" element={<Home />} /> {/* 404 -> Home */}
           </Routes>

@@ -6,7 +6,7 @@ import './vistaMision2.css';
 
 import SismoChart from './SismoChart.js';
 
-function VistaMision2(props) {
+function VistaMision2() {
 
   const globeEl = useRef();
   const containerRef = useRef();
